@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>as-v admin console</title>
+
+<link rel="stylesheet" href="css/bootstrap.css">
+<script type="text/javascript" src="libs/lin-bootstrap.js"></script>
+<script type="text/javascript" src="libs/angular2-polyfills.js"></script>
+
+<script type="text/javascript" src="libs/system.src.js"></script>
+<script type="text/javascript" src="libs/lin.js"></script>
+<script type="text/javascript" src="libs/jquery.js"></script>
+<script type="text/javascript">
+
+
+console.log(window.params.url);
+
+  var typescriptOptions ={
+        noImplicitAny: true,
+            // module: 'system',
+            module: 'umd',//commonjs commonjs', 'amd', 'umd' or 'system'.
+            target: 'ES5',
+            declaration:true,
+            emitDecoratorMetadata: true,
+            experimentalDecorators: true
+    };
+
+   var extension = 'min.js';
+   if(window.params.ts == 'true'){
+    extension = 'ts';
+   }else if(window.debug){
+    extension = 'js';
+   }
+
+	System.config({
+    transpiler: 'typescript',
+    
+		defaultJSExtensions: false,
+    // defaultExtension:'.ts'
+    packages: {        
+          manager: {
+            transpiler: 'typescript',
+            //format: 'register',
+            defaultExtension: extension
+          },    
+          ext: {
+            transpiler: 'typescript',
+            //format: 'register',
+            defaultExtension: extension
+          }
+        },
+		// ,
+		map: {
+      jquery: 'libs/jquery.js',
+      lin:'libs/lin.js',
+      typescript: 'libs/typescript.js',
+      BootstrapModal: 'libs/BootstrapModal.js',
+      ext: 'ext/angular2-ext.' + extension
+    }
+	});
+
+</script>
+
+</head>
+
+<body>
+<boot>
+<div style="width:100%;height:100%;margin-top:50%;">
+<div style="margin:0px auto;width:100px;margin-top:-20px;">
+Loading...
+
+</div>
+
+</div>
+
+</boot>
+
+<script type="text/javascript" src="libs/Rx.js"></script>
+<script type="text/javascript" src="libs/angular2.dev.js"></script>
+<script type="text/javascript" src="libs/router.dev.js"></script>
+
+<script>
+    System.import('manager/boot').then(function (boot) {
+        boot.main();
+    }).catch(console.error.bind(console));
+</script>
+<link rel="stylesheet" type="text/css" href="css/site.css">
+</body>
+</html>

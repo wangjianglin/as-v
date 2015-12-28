@@ -1,0 +1,60 @@
+
+<style type="text/css">
+
+li{
+	display: list-item;
+}
+
+ul{
+	list-style-type: none;
+     -webkit-user-select:none;
+}
+
+.ulc{
+	padding-left: 7px;
+    margin-top: 4px;
+}
+
+.ulc2{
+	padding-left: 25px;
+}
+.icon{
+    width: 15px;
+    text-align: center;
+    display: inline-block;
+}
+
+.edit-icon{
+    /*float: right;*/
+    padding-left: 5px;
+    color: #333;
+}
+</style>
+<ul class="ulc">
+    <li *ngFor="#dir of directories">
+
+        <span class="icon" (click)="dir.toggle()">{{dir.getIcon()}}</span><!-- <input type="checkbox" [checked]="dir.checked" (click)="dir.check()" /> --> 
+        <span (click)="dir.toggle()">{{ dir.obj.name }}</span>
+        <!-- <span *ngIf="edit">编辑</span> -->
+        <span *ngIf="edit" class="glyphicon glyphicon-edit edit-icon" aria-hidden="true"
+            (click)="editClassClick(dir.obj.id)"></span>
+        <div *ngIf="dir.expanded">
+
+            <ul class="ulc2">
+                <li *ngFor="#file of dir.files">
+
+                <span (click)="itemClick(file.id);">{{file.name}}</span>
+
+                <span *ngIf="edit" class="glyphicon glyphicon-edit edit-icon" aria-hidden="true"
+            (click)="editClassClick(file.id)"></span>
+
+            </li>
+            </ul>
+
+            <tree-view [directories]="dir.directories"></tree-view>
+
+        </div>
+
+    </li>
+</ul>
+

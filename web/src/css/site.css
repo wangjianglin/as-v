@@ -1,0 +1,75 @@
+
+
+body{
+    margin: 0px;
+    padding: 0px;
+	background-color: #fafafa;
+	font-size: 12px;
+}
+header .top{
+	height: 22px;
+	background-color: #eee;
+	text-align: right;
+	padding-right: 15px;
+	line-height: 22px;
+}
+
+header .nav{
+	line-height: 36px;
+	height: 36px;
+	/*background-color: rgba(85,198,198,1);*/
+	background: -webkit-linear-gradient(left, red , blue); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, red, blue); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, red, blue); /* Firefox 3.6 - 15 */
+  /*background: linear-gradient(to bottom right, rgba(115, 81, 197, 0.75) , rgba(107, 107, 167, 0.8),rgba(160, 168, 210, 0.75) , rgba(88, 88, 191, 0.8),rgba(115, 81, 197, 0.75) , rgba(107, 107, 167, 0.8));*/ /* 标准的语法 */
+background: linear-gradient(to bottom right, rgba(18, 15, 28, 0.75) , rgba(26, 26, 34, 0.8),rgba(8, 22, 31, 0.75) , rgba(29, 29, 26, 0.8),rgba(22, 31, 28, 0.75) , rgba(26, 26, 56, 0.8));
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+header .nav > a > div{
+	float: left;
+	padding: 0px 15px;
+    font-size: 18px;
+    color: #d2d2d2;
+}
+
+header .nav > a:hover > div{
+	background-color: rgba(124, 138, 134, 0.6);
+}
+
+
+header .nav .image{
+	padding: 0px 8px 0px 7px;
+    margin-top: -1px;
+}
+
+header .nav .image > img{
+	width: 32px;
+}
+
+header .nav .active{
+	background-color: rgba(24, 138, 34, 0.74);
+}
+header .nav .active > div{
+	background-color: rgba(24, 138, 34, 0.74) !important;
+    cursor: default;
+}
+
+
+footer{
+    background-color: #444;
+    color: #f3eEeE;
+    font-size: 12px;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    padding: 10px;
+}
+
+
+

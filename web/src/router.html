@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angular2 router</title>
+</head>
+
+<body>
+	
+    <section >
+        <my-app>Loading</my-app>
+    </section>
+
+<script src="libs/system.src.js"></script>
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/systemjs/0.18.4/system.src.js"></script> -->
+
+    <script>System.config({
+        transpiler: 'typescript',
+        defaultJSExtensions: true,
+        packages: {        
+          router: {
+            transpiler: 'typescript',
+            //format: 'register',
+            defaultExtension: 'ts'
+          }
+        },
+        map: {
+          jquery: 'libs/jquery.js',
+          lin:'libs/lin.js',
+          typescript: 'libs/typescript.js',
+          BootstrapModal: 'libs/BootstrapModal.js'
+        }
+    });</script>
+    
+
+<script src="libs/angular2-polyfills.js"></script>
+
+<script type="text/javascript" src="libs/Rx.js"></script>
+<script src="libs/angular2.dev.js"></script>
+<script src="libs/router.dev.js"></script>
+
+<!-- <script src="https://code.angularjs.org/2.0.0-alpha.46/angular2.js"></script>
+<script src="https://code.angularjs.org/2.0.0-alpha.46/http.dev.js"></script>
+<script src="https://code.angularjs.org/2.0.0-alpha.46/router.dev.js"></script> -->
+
+    <script>
+        System.import('router/router').then(function (app) {
+            app.main();
+        }).catch(console.error.bind(console));
+    </script>
+</body>
+
+</html>

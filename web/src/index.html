@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load i18n admin_static %}
+<head>
+    <meta charset="UTF-8">
+    <title>as-v</title>
+
+<link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+
+<link rel="stylesheet" type="text/css" href="{% static "css/site.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "app/app.css" %}">
+
+<script type="text/javascript" src="{% static "libs/lin.js" %}"></script>
+<script type="text/javascript" src="{% static "libs/jquery.js" %}"></script>
+    <!-- 2. Load our 'modules' -->
+
+<!-- <script src='s/app/app.js'></script> -->
+
+</head>
+
+<body>
+
+{% include 'app/nav.html' %}
+<div>
+{% include asv_content_url%}
+</div>
+<script type="text/javascript">
+  $(function(argument) {
+    $('body').children('div').css('min-height',(window.innerHeight - $('header').height() - $('footer').height()) + 'px');
+  });
+</script>
+<footer>{% import datetime %}
+  Copyright&nbsp;&copy;&nbsp;2014-{% print datetime.date.today().year %}
+
+  &nbsp;as-v.com&nbsp;&nbsp;版权所有&nbsp;&nbsp;email：184041008@qq.com&nbsp;&nbsp;渝ICP备xxxxxxxx号
+</footer>
+</body>
+</html>

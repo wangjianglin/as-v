@@ -1,0 +1,53 @@
+
+
+<style type="text/css">
+	.dev-list{
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+	display: -ms-box;
+}
+.dev-list-left{
+	min-width: 200px;
+	min-height: 400px;
+}
+
+.dev-list-right{
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-o-box-flex: 1;
+	-ms-box-flex: 1;
+}
+
+.dev-toolbar{
+	text-align: right;
+	width: 100%;
+}
+
+.edit-icon{
+	color: #333;
+	padding-left: 10px;
+}
+</style>
+
+<div class="dev-list">
+
+<div class="dev-list-left">
+<!-- <div>编辑</div> -->
+<tree-view [directories]="directories" (editClass)="editClass($event);" [edit]='false' (selected)="s($event);">===================</tree-view>
+<span *ngIf="edit" (click)="editClass(0)" class="glyphicon glyphicon-plus edit-icon" aria-hidden="true"></span>
+</div>
+
+<div class="dev-list-right">
+<!-- ok<br/>{{name}}<br>
+列表内容 -->
+<router-outlet>
+
+</router-outlet>
+</div>
+</div>
+<!--  -->
+<about>*********</about>
+<div id="bb"><span id="ok">确定</span><span id="no">取消</span></div>
+
+

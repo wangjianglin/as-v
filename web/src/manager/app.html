@@ -1,0 +1,71 @@
+
+<style type="text/css">
+
+
+
+nav ul{
+    list-style-type: none;
+}
+
+
+nav li{
+    float: left;
+}
+
+nav li a{
+    text-decoration: none;
+    background-color: transparent;
+    color: #777;
+    padding: 10px;
+}
+nav li a:hover{
+    color: #333;
+    background-color: transparent;
+}
+
+nav .active {
+    color: #555;
+    background-color: #e7e7e7;
+}
+
+
+
+</style>
+<!-- <header>
+    <nav>
+        <ul>
+            <li>as-v console</li>
+           <!- -  <li [class.active]="getLinkStyle('')"><a [router-link]="['/Home']" class="link">首页</a></li> - ->
+            <li [class.active]="getLinkStyle('/dev')"><a [routerLink]="['/Dev/']" class="link">开发技术</a></li>
+            <li [class.active]="getLinkStyle('/product')"><a [routerLink]="['/Product']" class="link">产品</a></li>
+            <!- - <li [class.active]="getLinkStyle('/about')" class="about-li" style="float:right;"><a [router-link]="['/About']" class="link">关于</a></li> - ->
+        </ul>
+    </nav>
+</header> -->
+<header>
+    
+    <div class="top">
+<span>登录</span>
+<span>退出</span>
+<span><a href="manager.html">进入</a></span>
+<span>收藏</span>
+<span>关于</span>
+    </div>
+
+    <div class="nav">
+<a href="/"><div class="image"><img src="images/logo.png" style="width:32px;"></div></a>
+<a [class.active]="getLinkStyle('/app/home')" [routerLink]="['App','Home']"><div>我的</div></a>
+<a [class.active]="getLinkStyle('/app/dev')" [routerLink]="['App','Dev','Home']"><div>开发技术</div></a>
+<a [class.active]="getLinkStyle('/app/product')" [routerLink]="['App','Product']"><div>产品</div></a>
+    </div>
+</header>
+
+<div>
+<router-outlet></router-outlet>
+</div>
+<footer>  Copyright&nbsp;&copy;&nbsp;2014-
+{{year}}
+  &nbsp;as-v.com&nbsp;&nbsp;版权所有&nbsp;&nbsp;email：184041008@qq.com&nbsp;&nbsp;渝ICP备xxxxxxxx号
+
+</footer>
+

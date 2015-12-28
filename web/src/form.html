@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angular2 seed</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css"></link>
+    <style>
+        .sample-form-content{
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+	
+    <section class="container sample-form-content">
+        <sample-form>Loading</sample-form>
+    </section>
+
+    <script src="/libs/system-csp-production.js"></script>
+    <script>System.config({defaultJSExtensions: true});</script>
+    <script src="/libs/angular2.dev.js"></script>
+    <script>
+        System.import('form').then(function (app) {
+            app.main();
+        }).catch(console.error.bind(console));
+    </script>
+</body>
+
+</html>
