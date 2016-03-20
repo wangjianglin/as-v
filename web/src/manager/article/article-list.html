@@ -1,0 +1,109 @@
+<style type="text/css">
+.date {
+    /*float: right;*/
+    line-height: 25px;
+}
+
+/*.item:nth-child(odd) {
+	background-color: white;
+}*/
+
+tr:nth-child(even) {
+	background-color: rgba(215, 215, 215, 0.38);
+}
+
+tr:nth-child(1){
+	border-bottom: 1px solid #898989;
+}
+
+.item-button {
+    line-height: 25px;
+    cursor: pointer;
+}
+
+.title {
+    line-height: 32px;
+    font-size: 20px;
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+    -moz-box-flex: 1;
+    -o-box-flex: 1;
+    margin: 11px 10px 1px 6px
+}
+
+.title > .show {
+	color:red;
+}
+
+.title span{
+	float: left;
+}
+
+.title > .date {
+	font-size: 12px;
+	line-height: 3;
+    color: #999;
+}
+
+.content {
+    text-indent: 2em;
+    text-align: justify
+}
+
+.dev-toolbar {
+    line-height: 28px;
+    font-size: 14px;
+    padding-top: 7px;
+}
+
+.dev-toolbar {
+    cursor: pointer;
+}
+
+table{
+	width: 100%;
+}
+
+th{
+	height: 30px;
+}
+
+.th_cls{
+	text-align: center;
+}
+
+.td_operation{
+	padding-top: 8px;
+	width: 108px;
+}
+
+td{
+	padding-bottom: 3px;
+}
+</style>
+<div class="dev-toolbar">&nbsp;
+<span (click)='addArticle()' style="cursor:pointer;">写新文章</span></div>
+
+<table>
+
+<tr class="item">
+<th>&nbsp;&nbsp;&nbsp;&nbsp;标题</th>
+<th class="th_cls">操作</th>
+</tr>
+<tr *ngFor="#item of articles">
+
+    <td>
+<div class="title">
+    <span>{{item.title}}</span><span class="show" *ngIf="!item.show">(草稿)</span>
+    <span class="date">&nbsp;&nbsp;2016-03-12&nbsp;12:10</span></div></td>
+    <!-- 
+<div class="content">{{item.abstract}}</div> -->
+<td class="td_operation">
+    <a class="item-button" (click)='editArticle(item.id)'>编辑</a>
+    <a class="item-button">删除</a>
+    <a class="item-button">分类</a>
+    </td>
+    <!-- <span class="date">{{item.date}}</span> --><!-- 创建时间，最后编辑时间 -->
+</tr>
+
+</table>

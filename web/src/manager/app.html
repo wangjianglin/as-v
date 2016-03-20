@@ -29,6 +29,10 @@ nav .active {
 }
 
 
+.search{
+    float: right;
+    height: 20px;
+}
 
 </style>
 <!-- <header>
@@ -45,18 +49,28 @@ nav .active {
 <header>
     
     <div class="top">
-<span>登录</span>
+<span>我的</span>
 <span>退出</span>
-<span><a href="manager.html">进入</a></span>
-<span>收藏</span>
+<!-- <span><a href="manager.html">进入</a></span>
+<span>收藏</span> -->
 <span>关于</span>
     </div>
 
     <div class="nav">
-<a href="/"><div class="image"><img src="images/logo.png" style="width:32px;"></div></a>
+<a href="/"><div class="image"><img src="images/logo.png"></div></a>
 <a [class.active]="getLinkStyle('/app/home')" [routerLink]="['App','Home']"><div>我的</div></a>
-<a [class.active]="getLinkStyle('/app/dev')" [routerLink]="['App','Dev','Home']"><div>开发技术</div></a>
+<!-- <a [class.active]="getLinkStyle('/app/article')" [routerLink]="['App','Article',{id:3},'Home']"><div>开发技术</div></a>
 <a [class.active]="getLinkStyle('/app/product')" [routerLink]="['App','Product']"><div>产品</div></a>
+<a [class.active]="getLinkStyle('/app/product1')" [routerLink]="['App','Product']"><div>算法</div></a>
+<a [class.active]="getLinkStyle('/app/product2')" [routerLink]="['App','Product']"><div>设计</div></a>
+<a [class.active]="getLinkStyle('/app/product3')" [routerLink]="['App','Product']"><div>文档(docbook/latex)<!- - 包括api文档生成工具 - -></div></a> -->
+
+<!-- <span *ngFor="#item of datas"> -->
+<a *ngFor="#item of datas" [class.active]="getLinkStyle('/app/article',item.id)" [routerLink]="['App','Article',{id:item.id},'Home']">
+<div>{{item.title}}</div>
+</a><!-- </span> -->
+
+<!-- <span class="search"><input></span> --><!-- 加入全文检索功能 -->
     </div>
 </header>
 

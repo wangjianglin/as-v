@@ -12,6 +12,8 @@ import {RouteParams,
     templateUrl: './manager/login.html'
 })
 
+//declare var lin:any;
+
 export class Login {
     //id: string;
     //constructor(params: RouteParams){
@@ -23,8 +25,19 @@ export class Login {
     	this.router = router;
     }
     loginClick(){
-    	localStorage.setItem('user',true);
+    	//sessionStorage.setItem('user',true);
     	//this.router.navigate(['root']);
-    	this.router.navigateByUrl('');
+    	//this.router.navigateByUrl('');
+        lin.http({
+            url:'user/login.action',
+            params:{},
+            result:()=>{
+                sessionStorage.setItem('user',true);
+                //this.router.navigate(['root']);
+                this.router.navigateByUrl('');
+            },fault:()=>{
+                alert('登录失败！');
+            }
+        });
     }
 }

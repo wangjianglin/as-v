@@ -1,5 +1,6 @@
 
-{% load i18n admin_static %}
+{% load i18n static %}
+{# load i18n admin_static #}
 
 <header>
 	
@@ -12,10 +13,25 @@
 	</div>
 
 	<div class="nav">
-<span><img src="{% static "images/as-v.png" %}"></span>
-<span>首页</span>
-<span>开发技术</span>
-<span>产品</span>
+<a><div class="image"><img src="{% static "images/logo.png" %}"></div></a>
+<a href="/"
+
+{% if request.path == '/' or request.path == '/index.html' %}
+class="active" 
+{% endif %}
+><div>首页</div></a>
+
+{% for item in navs %}
+
+<script type="text/javascript">
+	if("{{request.path}}" == "/article{{item.id}}.html"){
+		document.write('<a class="active" href="article{{item.id}}.html"><div>{{item.title}}</div></a>');
+	}else{
+		document.write('<a href="article{{item.id}}.html"><div>{{item.title}}</div></a>');
+	}
+</script>
+{% endfor %}
 	</div>
 </header>
-{{nav}}
+
+

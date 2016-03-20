@@ -11,7 +11,7 @@ export class LoggedInRouterOutlet extends RouterOutlet {
 
   constructor(_elementRef:ElementRef, _loader:DynamicComponentLoader,
               _parentRouter:Router, @Attribute('name') nameAttr:string) {
-    super(_elementRef, _loader, _parentRouter, nameAttr);
+    super(_elementRef, _loader, _parentRouter, 'nameAttr');
 
     this.parentRouter = _parentRouter;
     this.publicRoutes = {
@@ -22,7 +22,7 @@ export class LoggedInRouterOutlet extends RouterOutlet {
 
   activate(instruction: ComponentInstruction) {
     var url = this.parentRouter.lastNavigationAttempt;
-    if (!this.publicRoutes[url] && !localStorage.getItem('user')) {
+    if (!this.publicRoutes[url] && !sessionStorage.getItem('user')) {
       // todo: redirect to Login, may be there a better way?
       this.parentRouter.navigateByUrl('/login');
       return;

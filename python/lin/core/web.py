@@ -1,14 +1,123 @@
 __author__ = 'lin'
 
 import functools
+import inspect;
 import json as Json
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpRequest,QueryDict
+from django.db import models
+from django.db.models.query import QuerySet
+from datetime import datetime,time
+import re;
 
+
+from enum import Enum
 
 #from lin.core import tag;
 
 __import__('lin.core.tags');
+
+#HttpMethod = Enum('ALL', 'POST','GET')
+class HttpMethod(Enum):
+    ALL = 255
+    POST = 1
+    GET = 2
+    HEADER = 4
+    SESSION = 32
+    PATH = 64
+    HTTP = 31
+
+    # def __ror__(self, other):
+    #     return True;
+
+class RequestParam:
+
+    def __init__(self,cls,name=None,method=HttpMethod.ALL):
+        self._name = name;
+        self._cls = cls;
+        self._method = method;
+
+class HttpParam(RequestParam):
+
+    # def __init__(self,cls,name=None,method=HttpMethod.HTTP):
+    #     self._name = name;
+    #     self._cls = cls;
+    #     self._method = method;
+    def __init__(self,cls,name=None):
+        super(HttpParam,self).__init__(cls,name,HttpMethod.HTTP);
+
+#@staticmethod
+def __value_impl(form,name,cls):
+    #form = QueryDict();
+    # if not hasattr(form,name):
+    #     return None;
+
+    # if cls is int:
+    #     return  form.in
+    if form is None:
+        return None;
+    v = form.get(name);
+    if v is None or cls is None:
+        return v;
+
+    return cls(v);
+
+def __value(request,name,method,cls,param):
+    if name is None:
+        name = param;
+    # if method.value == 255:
+    #     v = __value_impl(request.REQUEST,name,cls);
+    #
+    #     if not v is None:
+    #         return v;
+
+    if method.value & HttpMethod.POST.value > 0:
+        v = __value_impl(request.POST,name,cls);
+
+        if v is not None:
+            return v;
+
+    if method.value & HttpMethod.GET.value > 0:
+        v = __value_impl(request.GET,name,cls);
+
+        if v is not None:
+            return v;
+
+    if method.value & HttpMethod.HEADER.value > 0:
+        v = __value_impl(request.META,name,cls);
+
+        return v;
+
+    if method.value & HttpMethod.SESSION.value > 0:
+        v = __value_impl(request.session,name,cls);
+
+        if v is not None:
+            return v;
+
+    if method.value & HttpMethod.PATH.value > 0:
+        v = __value_impl(request.PATH,name,cls);
+    return v;
+
+
+class HeaderParam(RequestParam):
+    def __init__(self,cls,name=None):
+        super(HeaderParam,self).__init__(cls,name,HttpMethod.HEADER);
+
+class PostParam(RequestParam):
+    def __init__(self,cls,name=None):
+        super(PostParam,self).__init__(cls,name,HttpMethod.POST);
+
+class GetParam(RequestParam):
+    def __init__(self,cls,name=None):
+        super(GetParam,self).__init__(cls,name,HttpMethod.GET);
+
+class SessionParam(RequestParam):
+    def __init__(self,cls,name=None):
+        super(SessionParam,self).__init__(cls,name,HttpMethod.SESSION);
+
+class PathParam(RequestParam):
+    def __init__(self,cls,name=None):
+        super(PathParam,self).__init__(cls,name,HttpMethod.PATH);
 
 #from django.views.decorators.csrf import csrf_protect
 import sys
@@ -33,13 +142,119 @@ class WebJSONEncoder(json.JSONEncoder):
             d.pop('_state')
 
         return d
+# from django.utils import simplejson
+from django.db import models
+# from django.core.serializers import serialize,deserialize
+from django.db.models.query import QuerySet
+# from django.test import TestCase
+# import collections;
+
+
+class ModelEncoder(json.JSONEncoder):
+    """ 继承自simplejson的编码基类，用于处理复杂类型的编码
+    """
+    def default(self,obj):
+        if isinstance(obj,QuerySet):
+            """ Queryset实例
+            直接使用Django内置的序列化工具进行序列化
+            但是如果直接返回serialize('json',obj)
+            则在simplejson序列化时会被从当成字符串处理
+            则会多出前后的双引号
+            因此这里先获得序列化后的对象
+            然后再用simplejson反序列化一次
+            得到一个标准的字典（dict）对象
+            """
+            #return json.loads(serialize('json',obj))
+            # s = serialize('json',obj);
+            # return Json.load(s);
+            # collections.Container()
+
+            # l = len(obj);
+            # d = [];
+            # for i in range(0,l):
+            #     d.append(obj[i]);
+            # return d;
+            return list(obj);
+
+        if isinstance(obj,models.Model):
+            """
+            如果传入的是单个对象，区别于QuerySet的就是
+            Django不支持序列化单个对象
+            因此，首先用单个对象来构造一个只有一个对象的数组
+            这是就可以看做是QuerySet对象
+            然后此时再用Django来进行序列化
+            就如同处理QuerySet一样
+            但是由于序列化QuerySet会被'[]'所包围
+            因此使用string[1:-1]来去除
+            由于序列化QuerySet而带入的'[]'
+            """
+            #return json.loads(serialize('json',[obj])[1:-1])
+            d = {}
+            # d['__class__'] = obj.__class__.__name__
+            # d['__module__'] = obj.__module__
+            #d.update(obj.__dict__)
+            for key,value in obj.__dict__.items():
+                if key.startswith('_'):
+                    continue;
+                d[key] = value;
+            # if not d.get('_state') is None :
+            #     d.pop('_state')
+
+            return d
+        if isinstance(obj,datetime):
+            return obj.microsecond + obj.timestamp() * 1000;
+
+        if hasattr(obj, 'isoformat'):
+            #处理日期类型
+            return obj.isoformat()
+
+        if hasattr(obj,'__get__') or hasattr(obj,'__call__'):
+            return obj();
+        return json.JSONEncoder.default(self,obj)
+
+def params_injection(fun,*args,**kwargs):
+    request = args[0];
+            # kwargs['id'] = 10;
+    arg_spce = inspect.getfullargspec(fun);
+
+    has_request = False;
+    annons = fun.__annotations__;
+    for arg in arg_spce.args + arg_spce.kwonlyargs:
+        if arg == 'request':
+            has_request = True;
+            continue;
+        if arg in annons:
+            param_value = annons[arg];
+            param_type = type(param_value);
+            if param_type is type:
+                kwargs[arg] = __value(request,arg,HttpMethod.HTTP,param_value,None);
+            elif issubclass(param_type,RequestParam):
+                kwargs[arg] = __value(request,param_value._name,param_value._method,param_value._cls,arg);
+        else:
+            kwargs[arg] = __value(request,arg,HttpMethod.HTTP,None,None);
+
+    # for param,paramValue in function.__annotations__.items():
+    #     if type(paramValue) is type:
+    #         #print(paramType)
+    #         kwargs[param] = __value(request,param,HttpMethod.ALL,int,None);
+    #     elif type(paramValue) is HttpParam:
+    #         kwargs[param] = __value(request,paramValue._name,paramValue._method,paramValue._cls,param);
+
+    result = None;
+    if has_request is True:
+        result = fun(*args,**kwargs)
+    else:
+        result = fun(**kwargs);
+
+    return result;
 
 def json(function):
     @functools.wraps(function)
     def wrapper(*args,**kwargs):
         try:
-            result = function(*args,**kwargs)
+            result = params_injection(function,*args,**kwargs);
         except BaseException as e:
+            result = None;
             print(e);
         #print('result:'+result)
         # return HttpResponse(str(result));
@@ -55,10 +270,69 @@ def json(function):
         # d = WebJSONEncoder();
         # d = _default_encoder
         # return HttpResponse(Json.dumps(result,cls=WebJSONEncoder),content_type="application/json")
-        return HttpResponse(Json.dumps({'code':0,'result':result},cls=WebJSONEncoder),content_type="application/json")
+
+        json_str = None;
+        try:
+            json_str = Json.dumps({'code':0,'result':result},cls=ModelEncoder);
+        except BaseException as e:
+            print(e);
+            json_str = '{code:-2}';
+
+        return HttpResponse(json_str,content_type="application/json",charset="utf-8");
+        # return HttpResponse(Json.dumps({'code':0,'result':result}),content_type="application/json")
+
     return wrapper;
 
+def view(name):
+    #print(name)
+    # print('000000000000000000000000000')
+    # return function
+
+    def func(function):
+        #paths[name] = function;
+
+        @functools.wraps(function)
+        def wrapper(*args,**kwargs):
+
+            result = None;
+
+            # arg_spce = inspect.getfullargspec(function);
+
+            try:
+                result = params_injection(function,*args,**kwargs);
+            except BaseException as e:
+                print(e);
+            #if(result is None):
+
+            return render(args[0], name,result)
+        return wrapper;
+    return func;
+
 paths = {}
+paths_pattern = {}
+paths_params = {}
+# paths_params_pattern = {};
+__mseach = re.compile(r'{(\w|\d)*}');
+
+def __search(name):
+    # s = re.compile(r'{(?:\w|\d)*}')
+
+    # print(name)
+    param = __mseach.search(name);
+
+    if param is None:
+        return None;
+    params = [];
+    prePos = 0;
+    while not param is None:
+        params.append((name[param.regs[0][0]+1:param.regs[0][1]-1],param.regs[0][0]-prePos));
+        prePos = param.regs[0][1] + 1;
+        param = __mseach.search(name,param.regs[0][1]);
+
+    return params;
+
+
+
 
 def path(name):
     #print(name)
@@ -70,29 +344,81 @@ def path(name):
         n = name;
         if n.startswith("/"):
             n = n[1:n.__len__()];
-        paths[n] = function;
+
+        params = __search(n);
+        # mserch = __mseach.search(n);
+
+        if not params is None:
+            #paths[n] = re.compile(__mseach.sub("{(\w|d)*}",n))
+            # paths_params_string = __mseach.sub("(\w|d)*",n);
+            m = re.compile('^' + __mseach.sub("(\w|d)*",n) + '$');
+            paths_pattern[m] = function;
+
+            paths_params[m] = params;
+
+        else:
+            paths[n] = function;
         return function
     return wrapper;
 
-def addViewModel(model):
-    # sys.modules[model]
-    __import__(model)
+def _machpath(name):
 
+    fun = paths.get(name);
+    if not fun is None:
+        return (fun,None);
+
+    for m in paths_pattern:
+        if not m.match(name) is None:
+            m2 = m.search(name);
+
+            regs = m.search(name).regs;
+            pre_pos = 0;
+
+            params_name = paths_params[m];
+
+            params = {};
+
+            for n in range(1, len(regs)):
+
+                params[params_name[n-1][0]] = name[pre_pos+params_name[n-1][1]:regs[n][1]];
+                pre_pos = regs[n][1] + 1;
+
+            return (paths_pattern[m],params);
+
+    return None;
+
+
+def __fun(request,name):
+    fun = _machpath(name);
+
+    if fun is None:
+        return None;
+
+    request.PATH = fun[1];
+    # if not fun[1] is None:
+    return fun[0](request);
 
 #@csrf_protect
 def action(request,name):
-    print('========' + name + "=========")
+    # print('========' + name + "=========")
 
-    fun = paths[name+'.action'];
-    return fun(request)
+    # fun = paths[name+'.action'];
+    # fun = _machpath(name + '.action');
+    # return fun(request)
+    return __fun(request,name + '.action');
 
 
 def html(request,name):
-    print('========' + name + "=========")
+    # print('========' + name + "=========")
 
-    fun = paths[name+'.html'];
-    return fun(request)
+    # fun = paths[name+'.html'];
+    # fun = _machpath(name + '.html');
+    # return fun(request)
+    return __fun(request,name + '.html');
 
+
+
+#ll
 
 
 # def view(function):
@@ -106,23 +432,41 @@ def html(request,name):
 #     return wrapper;
 
 
-def view(name):
-    #print(name)
-    # print('000000000000000000000000000')
-    # return function
+if __name__ == '__main__':
 
-    def func(function):
-        #paths[name] = function;
+    path = 'article334/list2375.html';
+    mpath = 'article{id1224}/list{i3da}.html';
 
-        @functools.wraps(function)
-        def wrapper(*args,**kwargs):
+    __search(mpath)
 
-            try:
-                result = function(*args,**kwargs)
-            except BaseException as e:
-                print(e);
-            #if(result is None):
+    m = re.compile('^' + __mseach.sub("(\w|d)*",mpath) + '$');
+    paths_pattern[m] = lambda : 'ok.';
 
-            return render(args[0], name,result)
-        return wrapper;
-    return func;
+    paths_params[m] = __search(mpath);
+
+    _machpath(path)
+    # m1 = re.compile(r'{(\w|\d)*}')
+    #
+    # s1 = m1.search(mpath);
+    #
+    #
+    # print(s1.regs[0][1]);
+    # print(m1.search(mpath,s1.regs[0][1]));
+    #
+    #
+    # print(m1.sub("{(\w|d)*}",mpath))
+    #
+    # m = re.compile(r'^article(\w|\d)*/list(\w|\d)*.html$');
+    #
+    # print(m.match(path));
+    # print(m.findall(path));
+    #
+    # print(m.search(path).regs)
+    #
+    # print('==========')
+
+
+
+def addViewModel(model):
+    # sys.modules[model]
+    __import__(model)

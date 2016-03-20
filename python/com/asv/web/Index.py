@@ -5,7 +5,7 @@ from com.asv import asv;
 # from lin.core import view
 
 @web.path('index.html')
-@asv.defaultView('app/home.html')
+@asv.view('app/home.html')
 #@web.view('index.html')
 def index(request):
     # return HttpResponse(str(c))
@@ -48,6 +48,6 @@ def admin(request):
 @web.json
 # def test(request,**params):
 def test(request,**dict):
-    print('***************')
+    # print('***************')
     # return HttpResponse('ok==.')
     return "ok...."

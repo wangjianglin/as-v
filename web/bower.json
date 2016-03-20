@@ -1,0 +1,15 @@
+{
+  "name": "as-v",
+  "version": "0.0.1",
+  "description": ".",
+  "dependencies": {
+    
+    "underscore": "1.8.3",
+    "MathJax": "~2.6.0",
+    "rangy": "~1.2.3",
+    "crel": "https://github.com/KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
+    "google-diff-match-patch-js": "~1.0.0",
+    "prism": "a12e8692b5f660a0123a06f74935f75386a93042"
+  }
+ 
+}

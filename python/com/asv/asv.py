@@ -1,35 +1,44 @@
 
 import functools
-import json as Json
-from django.shortcuts import render
 from lin.core import web
-from django.http import HttpResponse
-from collections import Counter
+from com.asv.web.Services import getnavs;
 
-def defaultView(name):
 
+def view(name):
 
     def func(function):
-        #paths[name] = function;
 
         @web.view('index.html')
         @functools.wraps(function)
-        def wrapper(*args,**kwargs):
+        def wrapper(request,*args,**kwargs):
 
+            result = None;
             try:
-                result = function(*args,**kwargs)
+                # result = function(request,*args,**kwargs)
+                d = {};
+                d[request] = request;
+                d.update(args);
+                result = web.params_injection(function,d,**kwargs);
             except BaseException as e:
                 print(e);
+                # exstr = traceback.format_exc();
+                # print(exstr)
             # if(result is None):
             #     result = {};
             #return dict({'contentUrl':name}.items()+result.items());
             #r = result;
             #r = dict(Counter({'contentUrl':name})+Counter(r))
             #return {'contentUrl':name};
-            r = {'asv_content_url':name};
+
+            r = {
+                'asv_content_url':name,
+                'request':request,
+                'navs':getnavs()
+                 };
             #r['obj'] = result;
             if result is not None:
-                r.update(result);
+                #r.update(result);
+                r['obj'] = result;
             return r;
         return wrapper;
     return func;

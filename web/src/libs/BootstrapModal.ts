@@ -1,7 +1,7 @@
 
 
 import {Component,View, ElementRef, DynamicComponentLoader, ComponentRef, Renderer,
-    bind, Injector, Injectable,
+    bind, Injector, Injectable,Inject,
     provide, Type} from 'angular2/core';
 //PromiseWrapper   isPresent  DomRenderer
 import {PromiseWrapper} from 'angular2/src/facade/promise'
@@ -28,9 +28,10 @@ export class Modal {
     componentLoader: DynamicComponentLoader;
     domRenderer: Renderer;
 
-    constructor(loader: DynamicComponentLoader, domRenderer: Renderer) {
+    constructor(@Inject(DynamicComponentLoader) loader: DynamicComponentLoader, 
+        ) {
         this.componentLoader = loader;
-        this.domRenderer = domRenderer;
+        //this.domRenderer = domRenderer;
     }
 
     private createBackdrop(elementRef: ElementRef, providers: Array<any>, config: ModalConfig) : Promise<ComponentRef> {
@@ -206,9 +207,9 @@ export class ModalDialogInstance {
     contentRef: ComponentRef;
 
 
-    constructor(public config: ModalConfig) {
-        this._resultDeffered = PromiseWrapper.completer();
-    }
+    // constructor(@Inject config: ModalConfig) {
+    //     this._resultDeffered = PromiseWrapper.completer();
+    // }
 
     set backdropRef(value: ComponentRef) {
         this._backdropRef = value;
@@ -306,7 +307,7 @@ class BootstrapModalContainer {
     title:String;
     closeText:String;
 
-    constructor(dialogInstance: ModalDialogInstance) {
+    constructor(@Inject dialogInstance: ModalDialogInstance) {
         this.dialogInstance = dialogInstance;
         this.title = dialogInstance.config.title || '窗口标题';
         this.closeText = dialogInstance.config.closeText || '关 闭';
@@ -362,7 +363,8 @@ export class YesNoModalContent {
     dialog: ModalDialogInstance;
     context: YesNoModalContentData;
 
-    constructor(dialog: ModalDialogInstance, modelContentData: IModalContentData) {
+    constructor(@Inject dialog: ModalDialogInstance,
+    @Inject modelContentData: IModalContentData) {
         this.dialog = dialog;
         this.context = <YesNoModalContentData>modelContentData;
     }

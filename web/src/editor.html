@@ -1,414 +1,150 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <title>Markdown – Editor</title>
-        <link rel="canonical" href="https://stackedit.io/editor">
-        <link rel="icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
-        <link rel="icon" sizes="192x192" href="res-min/img/logo-highres.png">
-        <link rel="shortcut icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
-        <link rel="shortcut icon" sizes="192x192" href="res-min/img/logo-highres.png">
-        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="res-min/img/logo-ipad-retina.png">
-        <meta charset="UTF-8">
-        <meta name="description" content="Full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
-        <meta name="author" content="Benoit Schweblin">
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612">
-        
-
-        <link rel="stylesheet" type="text/css" href="css/default.css">
-<script type="text/x-mathjax-config">
-  MathJax.Ajax.config.path["libs"] = "libs";
-</script>
-
-<script type="text/javascript" src="libs/MathJax/MathJax.js?config=TeX-AMS-MML_SVG"></script>
-<script type="text/javascript" src="libs/jquery.js"></script>
-
-        
-<!-- <script type="text/javascript" src="libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/Main.js"></script>
+<head>
+    <title>Markdown – Editor</title>
+    <link rel="canonical" href="https://stackedit.io/editor">
+    <link rel="icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+    <link rel="icon" sizes="192x192" href="res-min/img/logo-highres.png">
+    <link rel="shortcut icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+    <link rel="shortcut icon" sizes="192x192" href="res-min/img/logo-highres.png">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="res-min/img/logo-ipad-retina.png">
+    <meta charset="UTF-8">
+    <meta name="description" content="Full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+    <meta name="author" content="Benoit Schweblin">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612">
+    <!-- <link rel="stylesheet" type="text/css" href="css/default.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/lin.css">
+    <script type="text/x-mathjax-config">
+        <!-- MathJax.Ajax.config.path["libs"] = "libs"; -->
+    </script>
+    <script type="text/javascript" src="libs/prism-core.js"></script>
+    <script type="text/javascript" src="libs/editor/prism-markup.js"></script>
+    <script type="text/javascript" src="libs/editor/prism-latex.js"></script>
+    <script type="text/javascript" src="libs/editor/prism-markdown.js"></script>
+    <script type="text/javascript" src="libs/rangy-core.js"></script>
+    <script type="text/javascript" src="libs/crel.js"></script>
+    <script type="text/javascript" src="libs/MathJax/MathJax.js?config=TeX-AMS-MML_SVG"></script>
+    <script type="text/javascript" src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/bootstrap.js"></script>
+    <!-- <script type="text/javascript" src="libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/Main.js"></script>
 <script type="text/javascript" src="libs/MathJax/config/TeX-AMS_HTML.js"></script>
 <script type="text/javascript" src="libs/MathJax/jax/output/HTML-CSS/jax.js"></script>
 <script type="text/javascript" src="libs/MathJax/jax/output/HTML-CSS/fonts/TeX/fontdata.js"></script>
 <script type="text/javascript" src="libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/BBBold.js"></script> -->
-
-<!-- <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs/mathjax_init" src="libs/editor/mathjax_init.js"></script> -->
-
-<script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Converter.js"></script>
-<!-- <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="toMarkdown" src="res-min/bower-libs/to-markdown/src/to-markdown.js"></script> -->
-
-<script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Editor.js"></script>
-<!-- <script type="text/javascript" charset="utf-8" src="res-min/bower-libs/pagedown-extra/Markdown.Extra.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs/mathjax_init" src="libs/editor/mathjax_init.js"></script> -->
+    <script type="text/javascript" src="libs/diff_match_patch.js"></script>
+    <script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Converter.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="toMarkdown" src="res-min/bower-libs/to-markdown/src/to-markdown.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Editor.js"></script>
+    <script type="text/javascript" src="libs/editor/extensions/markdownSectionParser.js"></script>
+    <script type="text/javascript" src="libs/editor/extensions/mathJax.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="res-min/bower-libs/pagedown-extra/Markdown.Extra.js"></script>
  -->
-
-<!-- <script type="text/javascript" charset="utf-8" src="libs/editor/prism-core.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="libs/editor/prism-core.js"></script>
 <script type="text/javascript" charset="utf-8" src="libs/editor/prism-markup.js"></script>
 
 
 <script type="text/javascript" charset="utf-8" src="libs/editor/prism-latex.js"></script>
 <script type="text/javascript" charset="utf-8" src="libs/editor/prism-markdown.js"></script> -->
-
-<script type="text/x-mathjax-config;executed=true">
-
+    <script type="text/javascript" src="libs/underscore.js"></script>
+    <script type="text/javascript" src="libs/editor/editor.js"></script>
+    <script type="text/javascript" src="libs/lin-events.js"></script>
+    <script type="text/x-mathjax-config;executed=true">
+         MathJax.Hub.Config({ 
+         skipStartupTypeset: true, 
+         "HTML-CSS": { 
+         preferredFont: "TeX", 
+         availableFonts: [ 
+         "TeX" 
+          ], 
+         linebreaks: { 
+         automatic: true 
+         }, 
+          EqnChunk: 10, 
+         imageFont: null 
+         }, 
+         tex2jax: { inlineMath: [["$","$"],["\\\\(","\\\\)"]], displayMath: [["$$","$$"],["\\[","\\]"]], processEscapes: true }, 
+         TeX: $.extend({ 
+         noUndefined: { 
+         attributes: { 
+         mathcolor: "red", 
+         mathbackground: "#FFEEEE", 
+         mathsize: "90%" 
+         } 
+         }, 
+         Safe: { 
+         allow: { 
+         URLs: "safe", 
+         classes: "safe", 
+         cssIDs: "safe", 
+         styles: "safe", 
+         fontsize: "all" 
+         } 
+         } 
+         }, undefined), 
+         messageStyle: "none" 
+         });
+    </script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mathjax" src="libs//MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript">
     // MathJax.Hub.Config({
-    //     skipStartupTypeset: true,
-    //     "HTML-CSS": {
-    //         preferredFont: "TeX",
-    //         availableFonts: [
-    //             "TeX"
-    //         ],
-    //         linebreaks: {
-    //             automatic: true
-    //         },
-    //         EqnChunk: 10,
-    //         imageFont: null
-    //     },
-    //     tex2jax: { inlineMath: [["$","$"],["\\\\(","\\\\)"]], displayMath: [["$$","$$"],["\\[","\\]"]], processEscapes: true },
-    //     TeX: $.extend({
-    //         noUndefined: {
-    //             attributes: {
-    //                 mathcolor: "red",
-    //                 mathbackground: "#FFEEEE",
-    //                 mathsize: "90%"
-    //             }
-    //         },
-    //         Safe: {
-    //             allow: {
-    //                 URLs: "safe",
-    //                 classes: "safe",
-    //                 cssIDs: "safe",
-    //                 styles: "safe",
-    //                 fontsize: "all"
-    //             }
-    //         }
-    //     }, undefined),
-    //     messageStyle: "none"
+    //     extensions: '[libs]/physics.js'
     // });
-</script>
+    </script>
+    <script type="text/javascript">
+    $(function() {
 
-<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mathjax" src="libs//MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+        // var inputElt = document.getElementById('wmd-input');
+        // var $inputElt = $(inputElt);
+        // var contentElt = inputElt.querySelector('.editor-content');
+        // var $contentElt = $(contentElt);
+        // var marginElt = inputElt.querySelector('.editor-margin');
+        // var $marginElt = $(marginElt);
+        // var previewElt = document.querySelector('.preview-container');
 
-<script type="text/javascript">
-    MathJax.Hub.Config({
-        extensions:'[libs]/physics.js'
+        // $inputElt.addClass('font-rich');
+
+
+
+
     });
-</script>
+    </script>
+</head>
 
+<body style="background-color: #888">
+    <div style="width: 400px;height: 500px;position: relative;padding-left: 10px;padding-top: 10px;" id="editorDiv">
+    </div>
+    <script type="text/javascript">
+    $(function() {
 
-<script type="text/javascript">
-    
-
-// var constants = {};
-//     constants.VERSION = "4.3.11";
-//     constants.MAIN_URL = "https://stackedit.io/";
-//     constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
-//     constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
-//     constants.GOOGLE_DRIVE_APP_ID = "241271498917";
-//     constants.DROPBOX_APP_KEY = "lq6mwopab8wskas";
-//     constants.DROPBOX_APP_SECRET = "851fgnucpezy84t";
-//     constants.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0";
-//     constants.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg";
-//     constants.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
-//     constants.DEFAULT_FILE_TITLE = "Title";
-//     constants.DEFAULT_FOLDER_NAME = "New folder";
-//     constants.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
-//     constants.EDITOR_DEFAULT_PADDING = 35;
-//     constants.CHECK_ONLINE_PERIOD = 120000;
-//     constants.AJAX_TIMEOUT = 30000;
-//     constants.ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
-//     constants.ASYNC_TASK_LONG_TIMEOUT = 180000;
-//     constants.USER_IDLE_THRESHOLD = 300000;
-//     constants.IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
-//     constants.IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
-//     constants.COUCHDB_PAGE_SIZE = 25;
-//     constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
-//     constants.WELCOME_DOCUMENT_TITLE = "Hello!";
-//     constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
-//     constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
-//     constants.SSH_PUBLISH_URL = '/sshPublish';
-//     constants.PDF_EXPORT_URL = "/pdfExport";
-//     constants.COUCHDB_URL = 'https://stackedit.smileupps.com/documents';
-
-//     var settings = {
-//         layoutOrientation: "horizontal",
-//         editMode: 'ltr',
-//         lazyRendering: true,
-//         editorFontClass: 'font-rich',
-//         fontSizeRatio: 1,
-//         maxWidthRatio: 1,
-//         cursorFocusRatio: 0.5,
-//         defaultContent: "\n\n\n> Written with [StackEdit](" + constants.MAIN_URL + ").",
-//         commitMsg: "Published with " + constants.MAIN_URL,
-//         conflictMode: 'merge',
-//         markdownMimeType: 'text/plain',
-//         gdriveMultiAccount: 1,
-//         gdriveFullAccess: true,
-//         dropboxFullAccess: true,
-//         githubFullAccess: true,
-//         template: [
-//             '<!DOCTYPE html>',
-//             '<html>',
-//             '<head>',
-//             '<meta charset="utf-8">',
-//             '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
-//             '<title><%= documentTitle %></title>',
-//             '<link rel="stylesheet" href="' + constants.MAIN_URL + 'res-min/themes/base.css" />',
-            
-//             '</head>',
-//             '<body><div class="container"><%= documentHTML %></div></body>',
-//             '</html>'
-//         ].join('\n'),
-//         pdfTemplate: [
-//             '<!DOCTYPE html>',
-//             '<html>',
-//             '<head>',
-//             '<meta charset="utf-8">',
-//             '<title><%= documentTitle %></title>',
-//             //'<link rel="stylesheet" href="css/base.css" />',
-//             '<script type="text/x-mathjax-config">',
-//             'MathJax.Hub.Config({ messageStyle: "none" });',
-            
-//             '</head>',
-//             '<body><%= documentHTML %></body>',
-//             '</html>'
-//         ].join('\n'),
-//         pdfOptions: [
-//             '{',
-//             '    "marginTop": 25,',
-//             '    "marginRight": 25,',
-//             '    "marginBottom": 25,',
-//             '    "marginLeft": 25,',
-//             '    "pageSize": "A4"',
-//             '}'
-//         ].join('\n'),
-//         couchdbUrl: constants.COUCHDB_URL,
-//         extensionSettings: {}
-//     };
-
-
-$(function(){
-    var inputElt = document.getElementById('wmd-input');
-    var $inputElt = $(inputElt);
-    var contentElt = inputElt.querySelector('.editor-content');
-    var $contentElt = $(contentElt);
-    var marginElt = inputElt.querySelector('.editor-margin');
-    var $marginElt = $(marginElt);
-    var previewElt = document.querySelector('.preview-container');
-
-    $inputElt.addClass('font-rich');
-
-    
-
-
-});
-
-    
-</script>
-    </head>
-
-    <body>
-        
-<div style="position:absolute;width:100%;height:100%">
-        <!-- <div class="layout-wrapper-l1"> -->
-    <!-- <div class="layout-wrapper-l2">
-        <div class="navbar navbar-default">
-            <div class="navbar-inner">
-                <div class="nav left-space"></div>
-                <div class="nav right-space pull-right"></div>
-                <div class="buttons-dropdown dropdown">
-                    <div class="nav">
-                        <button class="btn btn-success" data-toggle="dropdown"
-                            title="Show buttons">
-                            <i class="icon-th-large"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                        </div>
-                    </div>
-                </div>
-                <ul class="nav left-buttons">
-                    <li class="wmd-button-group1 btn-group"></li>
-                </ul>
-                <ul class="nav left-buttons">
-                    <li class="wmd-button-group2 btn-group"></li>
-                </ul>
-                <ul class="nav left-buttons">
-                    <li class="wmd-button-group3 btn-group"></li>
-                </ul>
-                <ul class="nav left-buttons">
-                    <li class="wmd-button-group5 btn-group"></li>
-                </ul>
-                <ul class="nav left-buttons">
-                    <li class="wmd-button-group4 btn-group">
-                        <a class="btn btn-success button-open-discussion" title="Comments Ctrl/Cmd+M"><i class="icon-comment-alt"></i></a>
-                    </li>
-                </ul>
-                <ul class="nav pull-right right-buttons">
-                    <li class="offline-status hide">
-                        <div class="text-danger">
-                            <i class="icon-attention-circled"></i>offline
-                        </div>
-                    </li>
-                    <li class="extension-buttons"></li>
-                </ul>
-                <ul class="nav pull-right title-container">
-                    <li><div class="working-indicator"></div></li>
-                    <li><a class="btn btn-success file-title-navbar" href="#"
-                        title="Rename document"> </a></li>
-                    <li><div class="input-file-title-container"><input type="text"
-                        class="col-sm-4 form-control hide input-file-title"
-                        placeholder="Document title" /></div></li>
-                </ul>
-            </div>
-        </div> -->
-        <div id="wmd-button-bar"  class="hide"></div>
-        <div class="layout-wrapper-l3" style="top:55px;bottom:5px;left:5px;right:51%;">
-            <!-- <pre id="wmd-input" class="form-control" style="height:100%;"><div class="editor-content" contenteditable=true style="padding-bottom:20px;">Welcome to StackEdit!
-===================</div></pre> -->
-
-<textarea class="wmd-input" id="wmd-input" style="width:100%;height:100%;">
-This is the *second* editor.
-------------------------------
-$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\alpha$$
-It has a plugin hook registered that surrounds all words starting with the
-letter A with asterisks before doing the Markdown conversion. Another one gives bare links
-a nicer link text. User input isn't sanitized here:
-
-<marquee>I'm the ghost from the past!</marquee>
-
-http://google.com
-
-http://stackoverflow.com
-
-It also includes a help button.
-
-Finally, note that when you press Ctrl-Q or click the "Blockquote" button (without having a
-selection), this editor creates an example text that's different from the first editor.
-</textarea>
-
-        </div>
-
-           
-            <div id="wmd-preview" class="preview-panel" style="top:55px;bottom:5px;left:51%;right:5px;overflow:scroll">
-                
-        </div>
-        </div>
-       
-
-<script type="text/javascript">
-    
-
-    var converter = new Markdown.Converter();
-
-    //     var options = {
-    //         _DoItalicsAndBold: function(text) {
-    //             // Restore original markdown implementation
-    //             text = text.replace(/(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\1/g,
-    //                 "<strong>$2</strong>");
-    //             text = text.replace(/(\*|_)(?=\S)(.+?)(?=\S)\1/g,
-    //                 "<em>$2</em>");
-    //             return text;
-    //         }
-    //     };
-    //     converter.setOptions(options);
-    //var converter = Markdown.getSanitizingConverter();
-        pagedownEditor = new Markdown.Editor(converter);
-        //     , undefined, {
-        //     //undoManager: editor.undoMgr
-        // });
-        pagedownEditor.hooks.chain("onPreviewRefresh", function(){
-            console.log('==============')
-
-            var preview = document.getElementById("wmd-preview");
-
-            if(!MathJax || !MathJax.Hub || !MathJax.Hub.Queue){
-                return;
-            }
-            // debugger
-            MathJax.Hub.cancelTypeset = false;
-            MathJax.Hub.Queue([
-                "Typeset",
-                MathJax.Hub,
-                preview
-            ]);
+        var e = new lin.Editor({
+            render: document.getElementById('editorDiv'),
+            extensions: [lin.eventExtensions.markdownSectionParser,lin.eventExtensions.mathJax],
+            content:'dd$\\alpha$dd'
         });
-        pagedownEditor.run();
+        e.init();
+        e.run();
 
+        window.e = e;
 
-        // var clearNewline = false;
-        // $contentElt
-        //     .on('keydown', function(evt) {
-        //         if(
-        //             evt.which === 17 || // Ctrl
-        //             evt.which === 91 || // Cmd
-        //             evt.which === 18 || // Alt
-        //             evt.which === 16 // Shift
-        //             ) {
-        //             return;
-        //         }
-        //         selectionMgr.saveSelectionState();
-        //         adjustCursorPosition();
+        var c = function(){
+            console.log(e.content);
 
-        //         var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
+            console.log(e.html)
 
-        //         switch(evt.which) {
-        //             case 9: // Tab
-        //                 if(!cmdOrCtrl) {
-        //                     action('indent', {
-        //                         inverse: evt.shiftKey
-        //                     });
-        //                     evt.preventDefault();
-        //                 }
-        //                 break;
-        //             case 13:
-        //                 action('newline');
-        //                 evt.preventDefault();
-        //                 break;
-        //         }
-        //         if(evt.which !== 13) {
-        //             clearNewline = false;
-        //         }
-        //     })
-        //     .on('compositionstart', function() {
-        //         isComposing++;
-        //     })
-        //     .on('compositionend', function() {
-        //         setTimeout(function() {
-        //             isComposing--;
-        //         }, 0);
-        //     })
-        //     .on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
-        //     .on('paste', function(evt) {
-        //         undoMgr.currentMode = 'paste';
-        //         evt.preventDefault();
-        //         var data, clipboardData = (evt.originalEvent || evt).clipboardData;
-        //         if(clipboardData) {
-        //             data = clipboardData.getData('text/plain');
-        //         }
-        //         else {
-        //             clipboardData = window.clipboardData;
-        //             data = clipboardData && clipboardData.getData('Text');
-        //         }
-        //         if(!data) {
-        //             return;
-        //         }
-        //         replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, data);
-        //         adjustCursorPosition();
-        //     })
-        //     .on('cut', function() {
-        //         undoMgr.currentMode = 'cut';
-        //         adjustCursorPosition();
-        //     })
-        //     .on('focus', function() {
-        //         selectionMgr.hasFocus = true;
-        //     })
-        //     .on('blur', function() {
-        //         selectionMgr.hasFocus = false;
-        //     });
+            //e.content += "234";
+            setTimeout(c,3000);
+        }
 
-
-</script>
-    </body>
+        //c();
+    });
+    </script>
+</body>
 
 </html>

@@ -1,3 +1,15 @@
 1、JS生成map文件
 
 2、IE有问题
+
+3、HTTP请求时，采用 angular2-modal 实现数据加载效果
+
+4、实现修改文章的分类，采用 angular2-modal 实现对话框
+
+
+5、实现只预览的md内容的js组件
+
+
+Editor实例化，同一页面可以有多个Editor
+
+Editor markdownSectionParser

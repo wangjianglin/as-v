@@ -1,15 +1,6 @@
-# angular2-seed
-Angular2 seed project to help to run angular2 out of the box
 
 
-# How to start
+npm install
 
-- run `npm install -g gulp`
-
-- run `npm install`
-
-- run `gulp`
-
-
-![screenshoot](screenshot.png)
+node_modules/bower/bin/bower install --allow-root --production --config.interactive=false
 

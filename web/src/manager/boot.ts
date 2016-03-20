@@ -27,6 +27,12 @@ import {LoggedInRouterOutlet} from './LoggedInOutlet';
 
 import {Login} from './login';
 
+// import {
+//     Modal,IModalContentData,
+//     ModalDialogInstance,
+//     ModalConfig} from 'BootstrapModal';
+
+
 // import {http} from 'lin'
 
 //var lin = require('lin');
@@ -82,10 +88,12 @@ export function main(){
 	//bootstrap(App);
     bootstrap(Boot, [
         ROUTER_PROVIDERS,
-        //provide(Modal,{useClass:Modal}),
-        //provide(ModalDialogInstance,{useClass:ModalDialogInstance}),
-        //provide(ModalConfig,{useClass:ModalConfig}),
-        //provide(IModalContentData,{useClass:IModalContentData}),
+        //Modal 开始
+        // provide(Modal,{useClass:Modal}),
+        // provide(ModalDialogInstance,{useClass:ModalDialogInstance}),
+        // provide(ModalConfig,{useClass:ModalConfig}),
+        // provide(IModalContentData,{useClass:IModalContentData}),
+        //Modal 结束
         provide(LocationStrategy, {useClass: HashLocationStrategy})
     ]);
 }

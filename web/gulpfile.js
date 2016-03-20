@@ -19,7 +19,13 @@ var PATHS = {
         "node_modules/angular2/bundles/angular2-polyfills.js",
         "node_modules/typescript/lib/typescript.js",
         "node_modules/rxjs/bundles/Rx.umd.js",
-        "node_modules/angular2/bundles/angular2-all.umd.js"
+        "node_modules/angular2/bundles/angular2-all.umd.js",
+        "node_modules/bootstrap/dist/js/bootstrap.js",
+        "bower_components/underscore/underscore.js",
+        "bower_components/rangy/rangy-core.js",
+        "bower_components/crel/crel.js",
+        "bower_components/google-diff-match-patch-js/diff_match_patch.js",
+        "bower_components/prism/components/prism-core.js"
     ],
     libCss:[
         "node_modules/bootstrap/dist/css/bootstrap.css"
@@ -75,6 +81,12 @@ gulp.task("libs", function(){
         .pipe(gulp.dest(PATHS.dist + "/fonts"));
 
     gulp.src('src/font/**').pipe(gulp.dest(PATHS.dist + "/font"))
+
+
+    // gulp.src('bower_components/MathJax/MathJax.js').pipe(gulp.dest(PATHS.dist + 'libs/MathJax'));
+    // gulp.src('bower_components/MathJax/config/**').pipe(gulp.dest(PATHS.dist + 'libs/MathJax/config'));
+    // gulp.src('bower_components/MathJax/extensions/**').pipe(gulp.dest(PATHS.dist + 'libs/MathJax/extensions'));
+    // gulp.src('bower_components/MathJax/jax/**').pipe(gulp.dest(PATHS.dist + 'libs/MathJax/jax'));
 
 })
 
