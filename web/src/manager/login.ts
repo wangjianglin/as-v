@@ -28,11 +28,11 @@ export class Login {
     	//sessionStorage.setItem('user',true);
     	//this.router.navigate(['root']);
     	//this.router.navigateByUrl('');
-        lin.http({
+        lin.http.communicate({
             url:'user/login.action',
             params:{},
             result:()=>{
-                sessionStorage.setItem('user',true);
+                sessionStorage.setItem('user',{id:2});
                 //this.router.navigate(['root']);
                 this.router.navigateByUrl('');
             },fault:()=>{

@@ -1,0 +1,74 @@
+<style type="text/css">
+.article-list {
+    padding-right: 0px;
+    max-width: 1000px;
+    padding-left: 10px;
+    cursor: default;
+    border-bottom: 1px dashed #bbb;
+}
+
+.article-list .title {
+    font: normal 20px/30px 'Microsoft YaHei';
+    margin: 10px 3px 10px 0px;
+}
+
+.article-list .title > a {
+    color: #000;
+    cursor: pointer;
+}
+
+.article-list .title > a:hover {
+    text-decoration: none;
+    color: #666;
+}
+
+.article-list .abstract {
+    color: #666;
+    font: normal 14px/24px Arial;
+    text-indent: 2em;
+    text-align: justify;
+}
+
+.article-list .state {
+    padding-bottom: 5px;
+    height: 28px;
+    padding-top: 7px;
+    font-size: 12px;
+    color: #999;
+}
+
+.article-list:last-child {
+    border-bottom: 0px dashed #bbb;
+}
+
+.article-list .state > span {
+    float: right;
+}
+
+.article-list .state .author{
+	float: left;
+}
+
+.article-list .state .browse{
+	text-decoration: none;
+}
+.list-content{
+    margin: 11px 0px 20px 0px;
+}
+</style>
+<div class="list-content">
+    {% for item in obj.alist.list %}
+    <div class="article-list">
+        <div class="title">
+            <a href="/article{{obj.id}}/clsdir/list{{obj.aid}}/view{{item.id}}.html"> {{item.title}}</a>
+        </div>
+        <div class="abstract">{{item.abstract}}...</div>
+        <div class="state">
+            <span>&nbsp;&nbsp;<a class="browse" href="/article{{obj.id}}/clsdir/list{{obj.aid}}/view{{item.id}}.html">阅读({{item.browse}})&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
+            <span>{{item.modifyDate|date:'Y-m-d H:i'}}</span>
+
+            <span class="author">&nbsp;&nbsp;作者：{{item.userName}}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>

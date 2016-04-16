@@ -1,46 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN">
 {% load i18n static %}
 <head>
     <meta charset="UTF-8">
     <title>as-v</title>
 
-
+<!-- 
 <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/lin.css" %}">
 
+
+<link rel="stylesheet" type="text/css" href="{% static "css/default.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/lin.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "app/app.css" %}"> -->
+
+<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/default.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/lin.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/site.css" %}">
 
 <script type="text/javascript" src="{% static "libs/lin-bootstrap.js" %}"></script>
 
-<link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
 
-<link rel="stylesheet" type="text/css" href="{% static "css/site.css" %}">
-<link rel="stylesheet" type="text/css" href="{% static "app/app.css" %}">
 
+<script type="text/javascript" src="{% static "libs/underscore.js" %}"></script>
 <script type="text/javascript" src="{% static "libs/lin.js" %}"></script>
 <script type="text/javascript" src="{% static "libs/jquery.js" %}"></script>
+
+<!-- <link rel="stylesheet" href="{% static "libs/jquery/ztree/css/demo.css" %}" type="text/css"> -->
+<!-- <link rel="stylesheet" href="{% static "libs/jquery/ztree/css/zTreeStyle/zTreeStyle.css" %}" type="text/css">
+<script type="text/javascript" src="{% static "libs/jquery/ztree/js/jquery.ztree.all.min.js" %}"></script> -->
+
+
     <!-- 2. Load our 'modules' -->
 
 <!-- <script src='s/app/app.js'></script> -->
-
+<link rel="stylesheet" type="text/css" href="{% static "css/lin.css" %}">
 </head>
 
-<body>
+<body style="overflow: hidden;">
 
 {% include 'app/nav.html' %}
-<div>
+<div style="min-height: 3000px">
 {% include asv_content_url%}
 </div>
 <script type="text/javascript">
   $(function(argument) {
-    $('body').children('div').css('min-height',(window.innerHeight - $('header').height() - $('footer').height()) + 'px');
+    $('body').children('div').css('min-height',(window.innerHeight - $('header').height() - $('footer').height() - 20) + 'px');
+    $('body').css('overflow','');
   });
 </script>
 <footer>{% import datetime %}
   Copyright&nbsp;&copy;&nbsp;2014-{% print datetime.date.today().year %}
 
-  &nbsp;as-v.com&nbsp;&nbsp;版权所有&nbsp;&nbsp;email：184041008@qq.com&nbsp;&nbsp;渝ICP备xxxxxxxx号
+  &nbsp;as-v.com&nbsp;&nbsp;版权所有&nbsp;&nbsp;email：184041008@qq.com&nbsp;&nbsp;<!-- 渝ICP备xxxxxxxx号 -->
 </footer>
 </body>
 </html>

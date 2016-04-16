@@ -11,9 +11,7 @@ import {RouteParams,Router} from 'angular2/router'
 declare var jQuery:any;
 
 @Component({
-    selector: 'article-edit'
-})
-@View({
+    selector: 'article-edit',
     templateUrl: './manager/article/article-edit.html'
  //   styleUrls:['./components/dev/dev-add.css'],
 })
@@ -40,7 +38,7 @@ export class ArticleEdit implements AfterViewInit,OnInit{
         this.router.parent.loaded = true;
 
         if(this.params.params.id > 0){
-            lin.http({
+            lin.http.communicate({
                 url:'article/get.action',
                 params:{id:this.params.params.id},
                 result:(e)=>{
@@ -61,7 +59,9 @@ export class ArticleEdit implements AfterViewInit,OnInit{
         
         this.editor = new lin.Editor({
             render: $(this.elementRef.nativeElement).find('#article-edit'),
-            extensions: [lin.eventExtensions.markdownSectionParser,lin.eventExtensions.mathJax],
+            extensions: [new lin.eventExtensions.MarkdownSectionParser(),new lin.eventExtensions.MathJax(),
+                new lin.eventExtensions.MarkdownExtra(),
+                new lin.eventExtensions.UmlDiagrams()],
             css:{
                 position: 'relative',
                 width: '100%',
@@ -86,7 +86,7 @@ export class ArticleEdit implements AfterViewInit,OnInit{
 
     save(show){
 
-        lin.http({
+        lin.http.communicate({
             url:'article/save.action',
             params:{id:this.params.params.id || 0,
                 title:this.title,
@@ -101,7 +101,7 @@ export class ArticleEdit implements AfterViewInit,OnInit{
     }
 
     cancel(){
-        //window.history.back();
+        window.history.back();
     }
 }
 /*export class DevAddWindowData implements IModalContentData{

@@ -158,7 +158,7 @@ export class Dev implements OnInit{
         this.directories = [mobile,javas];
 
         
-        lin.http({
+        lin.http.communicate({
             url:'/services/dev/list.action',
             result:(e) => {
                 console.log(e);

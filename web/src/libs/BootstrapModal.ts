@@ -255,9 +255,7 @@ export class ModalDialogInstance {
  * Represents the modal backdrop.
  */
 @Component({
-    selector: 'modal-backdrop'
-})
-@View({
+    selector: 'modal-backdrop',
     template: ''
 })
 export class ModalBackdrop {
@@ -273,9 +271,7 @@ export class ModalBackdrop {
         'tabindex': '-1',
         'role': 'dialog'
     },
-    hostListeners: {'body:^keydown': 'documentKeypress($event)', 'click': 'onClick()'}
-})
-@View({
+    hostListeners: {'body:^keydown': 'documentKeypress($event)', 'click': 'onClick()'},
     template: `
     <div style="position: absolute;
     margin: 10px;
@@ -345,9 +341,7 @@ export class YesNoModalContentData implements IModalContentData{
  * A 2 state bootstrap modal window, representing 2 possible answer, true/false.
  */
 @Component({
-    selector: 'modal-content'
-})
-@View({
+    selector: 'modal-content',
     template: `
         <div class="modal-header">
             <h3 class="modal-title">{{context.title}}</h3>

@@ -25,7 +25,9 @@ var PATHS = {
         "bower_components/rangy/rangy-core.js",
         "bower_components/crel/crel.js",
         "bower_components/google-diff-match-patch-js/diff_match_patch.js",
-        "bower_components/prism/components/prism-core.js"
+        "bower_components/prism/components/prism-core.js",
+        "bower_components/flowchart/release/flowchart-1.3.4.js",
+        "bower_components/raphael/raphael.js"
     ],
     libCss:[
         "node_modules/bootstrap/dist/css/bootstrap.css"
@@ -208,6 +210,8 @@ gulp.task('default',['clean'], function () {
 
     var isTs = gulp.env.ts;
 
+    gulp.run('images');
+    
     if(isTs){
         gulp.run('html','libs','ts','js','css','ext');
     }else{

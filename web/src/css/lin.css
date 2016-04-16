@@ -13,7 +13,7 @@
 *
 ***************************************************************************/
 
-.editor {
+.editor-div {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -71,7 +71,7 @@
 
 .editor .navbar {
     position: absolute;
-    min-height: 50px;
+    min-height: 32px;
     margin-bottom: 21px;
     border: 1px solid transparent;
 }
@@ -88,8 +88,8 @@
 
 .editor .navbar .nav {
     float: left;
-    margin: 5px 3px;
-    height: 38px;
+    margin: 2px 1px;
+    height: 32px;
 }
 
 .editor .navbar .nav>li {
@@ -108,8 +108,8 @@
 }
 
 .editor .navbar .btn {
-    height: 38px;
-    padding: 6px 8px;
+    height: 32px;
+    padding: 5px 7px;
 }
 
 .editor .btn-success {
@@ -165,12 +165,18 @@
     background-clip: padding-box;
 }
 
+.editor .btn-group > .btn{
+    /* border-top-right-radius: 0; */
+    /* border-bottom-right-radius: 0; */
+    border-radius: 5px;
+}
+
 .editor [class^="icon-"]:before,
 .editor [class*=" icon-"]:before {
     font-family: "fontello";
     font-style: normal;
     font-weight: normal;
-    font-size: 20px;
+    font-size: 14px;
     speak: none;
     display: inline-block;
     text-decoration: inherit;

@@ -1,1 +1,249 @@
-<div>list</div>
+{% if page != None and page.pages > 0 %}
+<style type="text/css">
+.article-list {
+    padding-right: 0px;
+    max-width: 1000px;
+    padding-left: 10px;
+    cursor: default;
+    border-bottom: 1px dashed #bbb;
+}
+
+.article-list .title {
+    font: normal 20px/30px 'Microsoft YaHei';
+    margin: 10px 3px 10px 0px;
+}
+
+.article-list .title > a {
+    color: #000;
+    cursor: pointer;
+}
+
+.article-list .title > a:hover {
+    text-decoration: none;
+    color: #666;
+}
+
+.article-list .abstract {
+    color: #666;
+    font: normal 14px/24px Arial;
+    text-indent: 2em;
+    text-align: justify;
+}
+
+.article-list .state {
+    padding-bottom: 5px;
+    height: 28px;
+    padding-top: 7px;
+    font-size: 12px;
+    color: #999;
+}
+
+.article-list:last-child {
+    border-bottom: 0px dashed #bbb;
+}
+
+.article-list .state > span {
+    float: right;
+}
+
+.article-list .state .author{
+	float: left;
+}
+
+.article-list .state .browse{
+	text-decoration: none;
+}
+.list-content-inner{
+    margin: 11px 0px 20px 0px;
+}
+
+.list-page-div{
+    margin: 12px 3px 5px 3px;
+}
+
+.list-page-div > a{
+    text-decoration: none;
+    color: #aaa;
+}
+
+.list-page-div > a:hover > span{
+    color:white;
+    background-color: #428f2e;
+    border: 1px solid #428f2e;
+}
+
+.list-page-div > a > span {
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    padding: 1px 3px;
+    margin: 0px 3px;
+    color:#aaa;
+}
+
+.list-page-div > a > .selected-span{
+    color: #bbb;
+    border-color: #dadada;
+    background-color: #eee;
+}
+
+
+.list-page-div > a:hover > .selected-span{
+    background-color: #eee;
+    color: #bbb;
+    border-color: #dadada;
+}
+
+.list-page-div > span{
+    color: #aaa;
+    font-size: 16px;
+}
+
+.list-page-div > .page-info{
+    float: right;
+    color: #aaa;
+}
+
+.list-page-div > .page-info > input{
+    width: 32px;
+    height: 20px;
+    margin-top: 0px;
+    border: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #aaa;
+    text-align: center;
+}
+
+.list-page-div > .page-info > .goto-button{
+    border: 1px solid;
+    border-radius: 2px;
+    padding: 1px 3px;
+    cursor:pointer;
+}
+
+.list-page-div > .page-info > .goto-button:hover{
+    color:white;
+    background-color: #428f2e;
+    border: 1px solid #428f2e;
+}
+.list-page-div > .page-info > div{
+    float: left;
+    margin-top: 2px
+}
+</style>
+<div class="list-content-inner list-content">
+    {% for item in page.list %}
+    <div class="article-list">
+        <div class="title">
+            <a href="{{preUrl}}{{page.pageNo}}/view{{item.id}}.html"> {{item.title}}</a>
+        </div>
+        <div class="abstract">{{item.abstract}}...</div>
+        <div class="state">
+            <span>&nbsp;&nbsp;<a class="browse" href="{{preUrl}}{{page.pageNo}}/view{{item.id}}.html">阅读({{item.browse}})&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
+            <span>{{item.modifyDate|date:'Y-m-d H:i'}}</span>
+
+            <span class="author">&nbsp;&nbsp;作者：{{item.userName}}</span>
+        </div>
+    </div>
+    {% endfor %}
+
+{% if page.pages > 1 %}
+    <div class="list-page-div">
+        <a href="{{preUrl}}0.html"><span>&nbsp;首页&nbsp;</span></a>
+        <a
+
+        {% if page.pageNo > 0 %}
+        href="{{preUrl}}/{% print page.pageNo - 1 %}.html"
+        {% endif %}
+        ><span>&nbsp;上一页&nbsp;</span></a>
+
+        {% if page.pages < 9 %}
+            {% set page_start = 0 %}
+            {% set page_end = page.pages-1 %}
+        {% else %}
+            {% set page_start = page.pageNo - 3 %}
+            {% set page_end = page.pageNo + 3 %}
+
+            {% set page_start = page_start if page_start >= 0 else 0 %}
+            {% set page_end = page_start + 6 %}
+            {% set page_end = page_end if page_end < page.pages else page.pages - 1 %}
+            {% set page_start = page_end - 6 %}
+
+        {% endif %}
+
+        {% if page_start > 0 %}
+        <span>&nbsp;&nbsp;...&nbsp;&nbsp;</span>
+        {% endif %}
+
+        {% set page_range = range(page_start,page_end+1) %}
+        {% for page_item in page_range %}
+        <a 
+        {% if page_item != page.pageNo %}
+        href="{{preUrl}}{{page_item}}.html"
+        {% endif %}><span
+        {% if page_item = page.pageNo %}
+        class="selected-span"
+        {% endif %}
+        >&nbsp;&nbsp;{% print page_item + 1 %}&nbsp;&nbsp;</span></a>
+        {% endfor %}
+
+<!-- <span>{{page_start}}</span>
+<span>{{page_end}}</span>
+<span>{{page_range}}</span> -->
+
+        {% set page_pages_1 = page.pages - 1 %}
+        {% if page_end < page_pages_1 %}
+        <span>&nbsp;&nbsp;...&nbsp;&nbsp;</span>
+        {% endif %}
+
+        <a
+        {% set page_no_1 = page.pageNo + 1 %}
+        {% if page_no_1 < page.pages %}
+        href="{{preUrl}}{% print page.pageNo + 1 %}.html"
+        {% endif %}
+        ><span>&nbsp;下一页&nbsp;</span></a>
+
+
+        <a href="{{preUrl}}{% print page.pages-1 %}.html"><span>&nbsp;尾页&nbsp;</span></a>
+
+        {% import datetime %}
+            {% set tmp_date = datetime.datetime.now() %}
+        <div class="page-info">
+            <div>第{% print page.pageNo + 1 %}页&nbsp;&nbsp;共{{page.pages}}页&nbsp;&nbsp;&nbsp;</div>
+            <input placeholder="" id="_page_input_{% print int(tmp_date.timestamp() * 1000) %}">&nbsp;&nbsp;&nbsp;
+
+
+            <span class="goto-button" id="_page_button_{% print int(tmp_date.timestamp() * 1000) %}">转到</span>
+
+            <script type="text/javascript">
+                $(function(){
+                    // debugger
+                    var timestamp = '{% print int(tmp_date.timestamp() * 1000) %}';
+                    $('#_page_button_'+timestamp).on('click',function(){
+                        var val = $('#_page_input_'+timestamp).val();
+                        try{
+                            var page = parseInt(val);
+                            if(isNaN(page)){
+                                alert('请输入页数！');
+                                return;
+                            }
+                            if(page < 1 || page > {{page.pages}}){
+                                alert('您输入页数超出范围！');
+                                return;
+                            }
+                            window.location.href = '{{preUrl}}' + page + '.html';
+                        }catch(e){
+                            alert('请输入页数！');
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% else %}
+<div style="margin: 83px auto;width: 175px;font-size: 24px;color: red;">
+暂无内容！
+</div>
+{% endif %}

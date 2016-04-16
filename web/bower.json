@@ -9,7 +9,10 @@
     "rangy": "~1.2.3",
     "crel": "https://github.com/KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "google-diff-match-patch-js": "~1.0.0",
-    "prism": "a12e8692b5f660a0123a06f74935f75386a93042"
+    "prism": "a12e8692b5f660a0123a06f74935f75386a93042",
+    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#ea782c3d11eb78f57d00aa819527338996a70721",
+    "flowchart": "https://github.com/adrai/flowchart.js.git#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
+    "raphael": "~2.1.2"
   }
  
 }

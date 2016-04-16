@@ -1,0 +1,50 @@
+<style type="text/css">
+.article {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -o-box;
+    display: -ms-box;
+    display: box;
+    margin: 0px auto;
+    max-width: 980px;
+}
+
+.article-left {
+    min-width: 200px;
+    min-height: 400px;
+    margin-top: 10px;
+    background-color: #ebebeb;
+}
+
+.article-right {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -o-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+    position: relative;
+    margin-left: 3px;
+}
+</style>
+<div class="article">
+
+{% set treeitems = obj['clist'] %}
+{% if treeitems != None %}
+<div class="article-left">
+<!-- <ul id="article-class-tree" class="ztree"></ul> -->
+
+{% include 'app/article/tree.html' %}
+</div>
+{% endif %}
+
+<div class="article-right">
+	{% if obj.list == True %}
+	{% set preUrl = '/article'+str(obj['id']) + '/clsdir/list' + str(obj['aid']) + '/' %}
+	{% set page = obj['alist'] %}
+	{% include 'app/article/list.html' %}
+	{% else %}
+	{% set article = obj['article'] %}
+	{% include 'app/article/view.html' %}
+	{% endif %}
+</div>
+</div>

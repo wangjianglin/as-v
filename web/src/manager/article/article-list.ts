@@ -6,9 +6,7 @@ import {RouteParams,Router} from 'angular2/router'
 declare var lin:any;
 
 @Component({
-    selector: 'article-list'
-})
-@View({
+    selector: 'article-list',
     templateUrl: './manager/article/article-list.html'
 })
 export class ArticleList {
@@ -23,7 +21,7 @@ export class ArticleList {
         this.id = params.params.id;
         this.params = params;
 
-        lin.http({
+        lin.http.communicate({
             url:'/article/article_list.action',
             params:{id:this.id},
             result:(e) => {

@@ -60,7 +60,7 @@ declare var System:any;
  //   viewProviders: [NameList],
     templateUrl: './manager/app.html',
  //   styleUrls:['css/site.css'],
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES,LoggedInRouterOutlet]
 })
 @RouteConfig([
     //new Route({path: '/', redirectTo: '/home',useAsDefault:true}),
@@ -72,7 +72,7 @@ declare var System:any;
         loader: () => loadComponentAsync('Login','./manager/login')
         , name: 'Login'}),
  //   new Route({path: '/dev/...', component: Dev, name: 'Dev'}),
-    new AsyncRoute({path: '/article/:id/...', 
+    new AsyncRoute({path: '/article/:id/:type/...', 
         loader: () => loadComponentAsync('Article','./manager/article/article')
         , name: 'Article'}),
     new AsyncRoute({path: '/product', 
@@ -105,9 +105,16 @@ export class App implements AfterViewInit {
         //     {id:8,name:"其他"}
         //     ];
         setTimeout(()=>{
-            lin.http({
+            lin.http.communicate({
                 url:'/article/navs.action',
                 result:(e) => {
+                    if(e){
+                        for(var n=0;n<e.length;n++){
+                            if(e[n].type == 0){
+                                e[n]._route = 'Article'
+                            }
+                        }
+                    }
                     this.datas = e;
                     // var ds = [];
 
@@ -135,12 +142,12 @@ export class App implements AfterViewInit {
 
     getLinkStyle(path,id) {
 
-        path += '/'+id;
+        path += id;
         if(path === this.location.path()){
             return true;
         }
         else if(path.length > 0){
-            return this.location.path().indexOf(path) > -1;
+            return this.location.path().indexOf(path + '/') > -1;
         }
     }
 }

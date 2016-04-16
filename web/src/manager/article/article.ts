@@ -31,24 +31,45 @@ declare var lin:any;
 
 import {Empty} from 'ext';
 
+
+
+// @Component({})
+// export class Home {
+    
+//     constructor(@Inject(RouteParams) params:RouteParams,@Inject(Router) router: Router) {
+//         //this.context = <AdditionCalculateWindowData>modelContentData;
+//         //console.log(params.params)
+        
+//     }
+
+// }
+
 @Component({
     selector: 'article',
     directives:[ROUTER_DIRECTIVES,TreeView,NgFor,NgIf],
-    templateUrl: './manager/article/article.html'
+    template:'<router-outlet></router-outlet>'
+    // ,
+    // templateUrl: './manager/article/article.html'
 //    styleUrls:['./app/dev/dev.css'],
 })
 @RouteConfig([
     new Route({path: '/', component: Empty, name: 'Home'}),
     //{path: '/', redirectTo:['/Dev','DevList',{id:'3'}],name:'devroot'},
-    new AsyncRoute({path: '/list/:id', 
-        loader: () => loadComponentAsync('ArticleList','./manager/article/article-list')
-        , name: 'ArticleList'}),
-    new AsyncRoute({path: '/edit/:classId/:id', 
-        loader: () => loadComponentAsync('ArticleEdit','./manager/article/article-edit')
-        , name: 'ArticleEdit'}),
-    new AsyncRoute({path: '/editClass/:id', 
-        loader: () => loadComponentAsync('Classes','./manager/article/classes')
-        , name: 'Classes'})
+    // new AsyncRoute({path: '/list/:id', 
+    //     loader: () => loadComponentAsync('ArticleList','./manager/article/article-list')
+    //     , name: 'ArticleList'}),
+    new AsyncRoute({path: '/clsdir/:id/...', 
+        loader: () => loadComponentAsync('ClsDir','./manager/article/clsdir')
+        , name: 'ClsDir'}),
+    new AsyncRoute({path: '/con/:id', 
+        loader: () => loadComponentAsync('Edit','./manager/article/edit')
+        , name: 'Edit'}),
+    new AsyncRoute({path: '/cls/:id/...', 
+        loader: () => loadComponentAsync('Cls','./manager/article/cls')
+        , name: 'Cls'}),
+    new AsyncRoute({path: '/condir/:id/...', 
+        loader: () => loadComponentAsync('ConDir','./manager/article/condir')
+        , name: 'ConDir'})
     // ,
     // new AsyncRoute({path: '/about', 
     //     loader: () => ComponentHelper.LoadComponentAsync('About','./app/about')
@@ -78,6 +99,17 @@ export class Article implements OnInit{
         this.elementRef = elementRef;
         this.router = router;
         this.params = params;
+
+        console.log(this.params)
+        if(this.params.params.type == 0){
+            this.router.navigate( ['ClsDir', { id: this.params.params.id },'Home'] );
+        }else if(this.params.params.type == 1){
+            this.router.navigate( ['ConDir', { id: this.params.params.id },'Home'] );
+        }else if(this.params.params.type == 2){
+            this.router.navigate( ['Cls', { id: this.params.params.id },'Home'] );
+        }else if(this.params.params.type == 3){
+            this.router.navigate( ['Edit', { id: this.params.params.id }] );
+        }
         // httpRequest();
 
     //     var dataConfig = new YesNoModalContentData('Simple Large modal', 'Press ESC or click OK / outside area to close.', true);
@@ -88,7 +120,7 @@ export class Article implements OnInit{
     //             self.lastModalResult = result;
     //         }, function() {self.lastModalResult = 'Rejected!'});
     //     });
-        this.loadDirectories();
+        // this.loadDirectories();
     }
 
 
@@ -133,7 +165,7 @@ export class Article implements OnInit{
 
         setTimeout(()=>{
 
-            lin.http({
+            lin.http.communicate({
                 url:'/article/list.action',
                 params:{
                     id:this.params.params.id

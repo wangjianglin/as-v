@@ -1,6 +1,7 @@
 from django import template
 import re
 from django.template import base
+import traceback;
 
 register = template.Library()
 
@@ -19,8 +20,27 @@ class SetNode(template.Node):
         self.expression = expression
 
     def render(self, context):
-        context[self.varname] = eval(self.expression, {}, context)
-        return ''
+        # if self.expression is None:
+        #     return '';
+        # ns = self.expression.split('.');
+        # pre_obj = context;
+        # for item in ns:
+        #     try:
+        #         pre_obj = eval(item, {}, pre_obj);
+        #     except BaseException as ex:
+        #         return ''
+        #     # if hasattr(pre_obj,item):
+        #     #     pre_obj = pre_obj[item];
+        #     # else:
+        #     #     return '';
+        try:
+            context[self.varname] = eval(self.expression, {}, context)
+        except BaseException as ex:
+            exstr = traceback.format_exc();
+            print(exstr)
+
+        # context[self.varname] = pre_obj;
+        return '';
 
 register.tag('set', do_set)
 
@@ -30,13 +50,11 @@ print_regex = re.compile(r'^\s*print\s+(.*)$')
 
 @register.tag('print')
 def do_print(parser, token):
-    print('#########################################')
     m = re.match(print_regex, token.contents)
     if m:
         exp = m.group(1)
         return PrintNode(exp)
     else:
-        print("-------------------------")
         raise template.TemplateSyntaxError('{% print expression %}')
 
 class PrintNode(template.Node):
@@ -75,5 +93,17 @@ class ImportNode(template.Node):
         return ''
 
 register.tag('import', do_import)
+
+
+@register.filter(name='js')
+def do_print(value, arg=None):
+
+    value = value.replace("'","\\\'");
+    value = value.replace("script","scr\'+\'ipt");
+    value = value.replace("\n","\\n");
+    # value = value.replace("<","&lt;");
+    # value = value.replace(">","&gt;");
+
+    return "'" + value + "'";
 
 base.add_to_builtins('lin.core.tags')

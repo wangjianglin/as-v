@@ -57,8 +57,8 @@ nav .active {
     </div>
 
     <div class="nav">
-<a href="/"><div class="image"><img src="images/logo.png"></div></a>
-<a [class.active]="getLinkStyle('/app/home')" [routerLink]="['App','Home']"><div>我的</div></a>
+<a href="/"><span class="image" style="float: left;cursor: pointer;"><img src="images/logo.png"></span></a>
+<a [class.active]="getLinkStyle('/app/home','')" [routerLink]="['App','Home']"><div>我的</div></a>
 <!-- <a [class.active]="getLinkStyle('/app/article')" [routerLink]="['App','Article',{id:3},'Home']"><div>开发技术</div></a>
 <a [class.active]="getLinkStyle('/app/product')" [routerLink]="['App','Product']"><div>产品</div></a>
 <a [class.active]="getLinkStyle('/app/product1')" [routerLink]="['App','Product']"><div>算法</div></a>
@@ -66,7 +66,7 @@ nav .active {
 <a [class.active]="getLinkStyle('/app/product3')" [routerLink]="['App','Product']"><div>文档(docbook/latex)<!- - 包括api文档生成工具 - -></div></a> -->
 
 <!-- <span *ngFor="#item of datas"> -->
-<a *ngFor="#item of datas" [class.active]="getLinkStyle('/app/article',item.id)" [routerLink]="['App','Article',{id:item.id},'Home']">
+<a *ngFor="#item of datas" [class.active]="getLinkStyle('/app/article/',item.id)" [routerLink]="['App','Article',{id:item.id,type:item.type},'Home']">
 <div>{{item.title}}</div>
 </a><!-- </span> -->
 
@@ -75,7 +75,7 @@ nav .active {
 </header>
 
 <div>
-<router-outlet></router-outlet>
+<login-router-outlet></login-router-outlet>
 </div>
 <footer>  Copyright&nbsp;&copy;&nbsp;2014-
 {{year}}

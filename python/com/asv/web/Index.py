@@ -17,11 +17,10 @@ def index(request):
     pass
 
 def admin(request):
-    # return HttpResponse(str(c))
-    # return # -*- coding: utf-8 -*-
-    #print('=======')
-    #return render(request, 'index.html')
-    return HttpResponse(u'<script type="text/javascript">window.location.href = "/s/admin/index.html";</script>')
+    return HttpResponse(u'<script type="text/javascript">window.location.href = "/s/admin.html";</script>')
+
+def manager(request):
+    return HttpResponse(u'<script type="text/javascript">window.location.href = "/s/manager.html";</script>')
 
 
 # def action(request,action):

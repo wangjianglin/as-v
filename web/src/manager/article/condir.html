@@ -1,0 +1,78 @@
+
+
+<style type="text/css">
+	.dev-list{
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+	display: -ms-box;
+	display: box;
+}
+.dev-list-left{
+	min-width: 200px;
+	min-height: 400px;
+	background-color: #ebebeb;
+	margin-right: 5px;
+}
+
+.dev-list-right{
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-o-box-flex: 1;
+	-ms-box-flex: 1;
+	box-flex: 1;
+	position: relative;
+	margin-left: 3px;
+}
+
+.dev-toolbar{
+	text-align: right;
+	width: 100%;
+}
+
+.edit-icon{
+	color: #333;
+	padding-left: 10px;
+}
+
+.condir-add-sub{
+	margin: 16px 0px 4px 9px;
+}
+.condir-add-sub > span{
+	    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+}
+
+.condir-add-sub:hover > span{
+    background-color: rgba(34,147,20,0.8);
+    border-radius: 3px;
+    color: #eee;
+}
+
+</style>
+
+<div class="dev-list">
+
+<div class="dev-list-left">
+<!-- <div>编辑</div> -->
+<div class="condir-add-sub">
+<!-- <span (click)="addContent();">加文章</span> -->
+<span (click)="addSubDirClick();">增加子分类</span>
+</div>
+<ul id="article-class-tree" class="ztree"></ul>
+
+</div>
+
+<div class="dev-list-right">
+<!-- ok<br/>{{name}}<br>
+列表内容 -->
+<router-outlet>
+
+</router-outlet>
+</div>
+</div>
+<!--  -->
+
+
+

@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^(.*)\.action$', 'lin.core.web.action',name='action'),
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'com.asv.web.Index.index', name='index'),
+    url(r'^manager$', 'com.asv.web.Index.manager',name='manager'),
+    url(r'^admin$', 'com.asv.web.Index.admin',name='admin'),
     #url(r'^admin$', 'com.asv.web.Index.admin', name='admin')
     #                    ,
     # url(r'^index.html$', 'com.asv.web.Index.index', name='index')

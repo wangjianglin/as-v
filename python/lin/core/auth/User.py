@@ -7,11 +7,12 @@ from lin.core import web
 
 @web.path('user/login.action')
 @web.json
-def user_login(request):
+def user_login(request,username,password):
 
+    # if username != 'lin' or password !=
     # # r = Dev.objects.all().order_by('order')#.values_list('id','title','order','dev_id');
-    request.session['user.id'] = 'lin';
-    request.session['user.name'] = 'lin name';
+    request.session['user.id'] = '2';
+    request.session['user.name'] = 'lin';
     # return r;
     # return Dev.objects.all();
     # return [Dev(),Dev()];

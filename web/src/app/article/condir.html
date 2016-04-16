@@ -1,0 +1,89 @@
+<style type="text/css">
+.article {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -o-box;
+    display: -ms-box;
+    display: box;
+    margin: 0px auto;
+    max-width: 980px;
+}
+
+.article-left {
+    min-width: 200px;
+    min-height: 400px;
+    /*padding: 5px 3px 0px 5px;*/
+    margin-top: 15px;
+    background-color: #ebebeb;
+}
+
+.article-right {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -o-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+    position: relative;
+    margin-left: 3px;
+}
+
+.article .article-active > div{
+	/*background-color: red;*/
+	color: #2fda03;
+}
+
+.article-left a{
+    text-decoration: none;
+    color:#333;
+}
+
+.article-left a:hover > div{
+	/*color: #2354f0;*/
+}
+.article-left > a > div{
+padding: 3px 1px 1px 13px;
+    line-height: 22px;
+}
+
+.article-left > a:hover > div{
+	background-color:rgba(4,4,4,0.15);
+}
+</style>
+<div class="article">
+
+{% if obj.clist != None %}
+<div class="article-left" style="margin-top: -1px;">
+<!-- <ul id="article-class-tree" class="ztree"></ul> -->
+{% for item in obj.clist %}
+
+<div style="font-size: 22px;
+    margin: 14px 0px 5px 10px;
+    color: #444;
+    font-weight: bold;">{{item.title}}</div>
+{% set tmp_list = item.items() %}
+{% for item in tmp_list %}
+<a
+{% if item.id == obj.cid %}
+ class="article-active"
+ {% else %}
+ href="/article{{obj.id}}/condir/view{{item.id}}.html"
+{% endif %}
+>
+
+<div >
+{{item.title}}
+</div>
+</a>
+
+{% endfor %}
+
+{% endfor %}
+</div>
+{% endif %}
+
+<div class="article-right">
+	
+	{% set article = obj["article"] %}
+	{% include 'app/article/view.html' %}
+</div>
+</div>

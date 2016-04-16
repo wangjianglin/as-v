@@ -95,7 +95,7 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    var editorHtml = '<div class="editor">' +
+    var editorHtml = '<div class="editor editor-div">' +
         '<!-- <div class="layout-wrapper-l1"> -->' + '<!--  <div class="layout-wrapper-l2"> -->' +
         '	<div class="navbar navbar-default">' +
         '    	<div class="navbar-inner">' +
@@ -147,7 +147,7 @@
         '    	</div>' +
         '	</div>' +
         '	<div id="wmd-button-bar" class="hide"></div>' +
-        '	<div style="position: absolute;width: 100%;top: 53px;bottom: 0px;">' +
+        '	<div style="position: absolute;width: 100%;top: 40px;bottom: 0px;">' +
         '    	<div class="layout-wrapper-l3" style="bottom: 0px;left: 0px;width: 50%;position: absolute;top: 0px;">' +
         '			<div style="position:absolute;left:3px;top:0px;bottom:3px;right:2px;">' +
         '        		<pre id="wmd-input" class="wmd-input form-control" style="padding: 5px;height:100%;"><div class="editor-content" contenteditable=true style="padding-bottom:20px;"></div></pre>' +
@@ -956,9 +956,6 @@
             inputElt.scrollTop = scrollTop;
         }
 
-
-
-
         function getValue() {
             return textContent;
         }
@@ -1377,6 +1374,11 @@
 
             editorEle = $(editorHtml);
 
+// .editor .btn-group > .btn{
+//     /* border-top-right-radius: 0; */
+//     /* border-bottom-right-radius: 0; */
+//     border-radius: 5px;
+// }
             var css = config.css || {};
 
             for(var name in css){
@@ -1443,17 +1445,21 @@
                     elt: btnGroupElt,
                     width: navbarBtnGroupsWidth.shift()
                 });
-
+                // $(btnGroupElt).css('borderRadius','5px');
             });
             _.each(navbar.elt.querySelectorAll('.editor .left-buttons'), function(btnGroupElt) {
                 navbarBtnGroups.push({
                     elt: btnGroupElt,
                     width: navbarBtnGroupsWidth.shift()
                 });
+                // $(btnGroupElt).css('borderRadius','5px');
             });
 
 
+
             onResize();
+            // console.log(editorEle.find('.btn-group > .btn'))
+            // editorEle.find('.btn-group > .btn').css('borderRadius','5px');
             $(window).resize(onResize);
 
             // navbar.$elt.find('[data-toggle=dropdown]').on('click',function(){
@@ -1623,6 +1629,139 @@
         return Editor;
     })();
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// preview
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    var previewFun = function(){
+
+        var previewConfig;
+        var converter;
+        var render;
+
+        var Preview = function(config) {
+            config = config || {};
+            previewConfig = config;
+
+
+            var css = config.css || {};
+
+            for(var name in css){
+                editorEle.css(name,css[name]);
+            }
+
+
+            converter = new Markdown.Converter();
+            render = $(previewConfig.render);
+
+            Object.defineProperty(this,'ele',{
+                writeable:false,
+                value:render
+            })
+
+            Object.defineProperty(this,'converter',{
+                writeable:false,
+                value:converter
+            })
+
+            // var render = $(config.render);
+            // if (render) {
+            //     render.append(editorEle);
+            // }
+
+            //var converter = new Markdown.Converter();
+
+        }
+    
+        Preview.prototype.render = function(){
+            if (render) {
+
+                var events = new lin.Event();
+                if (previewConfig.extensions) {
+                    if (previewConfig.extensions instanceof Array) {
+                        for (var n = 0; n < previewConfig.extensions.length; n++) {
+                            events.addExtendsion(previewConfig.extensions[n]);
+                        }
+                    } else {
+                        events.addExtendsion(previewConfig.extensions);
+                    }
+                }
+
+                events.addEventHook('onPreview');
+                events.addEventHook('onInitPreview');
+
+                events.onInitPreview(this);
+
+                var v = $(converter.makeHtml(previewConfig.content || ''));
+                render.append(v);
+
+
+                events.onPreview(this)
+
+                 //     //debugger
+                // if (MathJax && MathJax.Hub && MathJax.Hub.Queue) {
+                        
+                //     // debugger
+                //     MathJax.Hub.cancelTypeset = false;
+                //     MathJax.Hub.Queue([
+                //         "Typeset",
+                //         MathJax.Hub,
+                //         v[0]
+                //     ]);
+                // }
+            }
+        }
+        return Preview;
+    };
+    Editor.Preview =  (function() {
+
+        // rangy.init();
+
+        function Preview() {
+
+            var conFun = previewFun();
+
+            if (!arguments || arguments.length == 0) {
+                return new conFun();
+            }
+
+            if (arguments.length == 1) {
+                return new conFun(arguments[0]);
+            }
+
+            if (arguments.length == 2) {
+                return new conFun(arguments[0], arguments[1]);
+            }
+
+            if (arguments.length == 3) {
+                return new conFun(arguments[0], arguments[1], arguments[2]);
+            }
+
+            if (arguments.length == 4) {
+                return new conFun(arguments[0], arguments[1], arguments[2], arguments[3]);
+            }
+
+            if (arguments.length == 5) {
+                return new conFun(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+            }
+
+            var cs = 'new conFun(';
+            for (var n = 0; n < arguments.length; n++) {
+                cs += 'arguments[' + n + ']';
+                if (n != arguments.length - 1) {
+                    cs += ","
+                }
+            }
+            cs += ')';
+            return eval(cs);
+
+        }
+        return Preview;
+    })();
 
     window.lin = window.lin || {};
     window.lin.Editor = Editor;

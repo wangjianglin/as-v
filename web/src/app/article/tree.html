@@ -1,0 +1,222 @@
+
+{% if is_tree_css != True %}
+<style type="text/css">
+.tree-ulc li {
+    display: list-item;
+}
+
+.tree-ulc ul {
+    list-style-type: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    line-height: 20px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.tree-ulc {
+    padding-left: 7px;
+    margin-top: 4px;
+    list-style: none;
+}
+
+.tree-ulc .tree-text-div{
+    #background-color: #bbb;
+    display: flex;
+    padding:1px;
+    margin: 1px;
+}
+
+.tree-ulc .tree-text-div a{
+    width: 100%;
+    color: #333;
+    text-decoration: none;
+}
+
+.tree-ulc .tree-text-div a div{
+    width: 100%;
+}
+
+.tree-ulc .tree-text-div:hover a{
+    color:#fefefe;
+}
+
+.tree-ulc .tree-text-div:hover{
+    background-color: #aaa;
+    color:#fefefe;
+}
+
+.tree-ulc .tree-text-div-active a{
+    #background-color: #333;
+    color: #23d343;
+    cursor: pointer;
+}
+.tree-ulc2 {
+    padding-left: 25px;
+}
+
+.tree-ulc .tree-icon {
+    width: 15px;
+    text-align: center;
+    display: inline-block;
+}
+
+.tree-ulc .tree-edit-icon {
+    /*float: right;*/
+    padding-left: 5px;
+    color: #333;
+}
+</style>
+{% set is_tree_css = True %}
+
+
+<script type="text/javascript">
+  
+  {# 构建树形结构 #}  
+$(function(){
+    var treeEle = $("#tree-id-765794AD5");
+    //var tree = new Array();
+    var preItem = undefined;
+
+    var genTree = function(pele,parent){
+
+        var nodes = new Array();
+        var eles = pele.find('>li');
+
+        for(var n=0;eles && n<eles.length;n++){
+            var ele = eles[n];
+            var title = $(ele).find('>div[title=""]');//.attr('type')
+            var content = $(ele).find('>div[content=""]');
+
+            //content.css('display','none');
+
+            var item = {};
+            nodes.push(item);
+            item.type = title.attr('type');
+            item.id = title.attr('id');
+            item.title = title;
+            item.content = content;
+            item.parent = parent;
+
+
+            if(item.type == 0 || item.type == 1 || item.type == 4){
+
+                // title.onclick = function(){
+                //     console.log('**************')
+                // }
+                item.items = genTree(item.content.find(">ul"),item);
+                title.on('click',(function(item){
+                    return function(){
+                        if(item.expanded){
+                            item.content.css('display','none');
+                            item.title.find('.tree-icon').text('+');
+                            item.expanded = false;
+                        }else{
+                            item.content.css('display','block');
+                            item.title.find('.tree-icon').text('-');
+                            item.expanded = true;
+                        }
+
+                        if(preItem != item){
+                            var tmpParent = preItem;
+                            while(tmpParent && tmpParent != item.parent){
+                                tmpParent.content.css('display','none');
+                                tmpParent.title.find('.tree-icon').text('+');
+                                tmpParent.expanded = false;
+
+                                tmpParent = tmpParent.parent;
+                            }
+                        }
+                        preItem = item;
+                    }
+                })(item));
+            }
+
+            
+            //$(ele).find('>div[content=""] > ul')
+        }
+        return nodes;
+    }
+
+    var tree = genTree(treeEle);
+    
+    var expandTree = function(tree,id){
+        for(var n=0;tree&&n<tree.length;n++){
+            if(tree[n].id == id){
+                //tree[n].title.addClass('tree-text-div-active');
+                preItem = tree[n];
+                return true;
+            }
+            if(expandTree(tree[n].items,id)){
+                //tree[n].content.css('display','block');
+                //tree[n].title.find('.tree-icon').text('-');
+                tree[n].expanded = true;
+                return true;
+            }
+            
+        }
+    }
+
+    expandTree(tree,{{obj.aid}});
+
+});
+
+</script>
+
+<ul class="tree-ulc" id="tree-id-765794AD5">
+
+{% else %}
+<ul class="tree-ulc">
+{% endif %}
+
+    {% for item in treeitems %}
+    <li>
+        <div title type={{item.type}} id={{item.id}} class="tree-text-div
+        {% if item.id == obj.aid %}
+        tree-text-div-active
+        {% endif %}
+        ">
+            {% if item.type == 0 or item.type == 1 or item.type == 4 %}
+            <span class="tree-icon">
+            {% if item.expanded == None %}
+            +
+            {% else %}
+            -
+            {% endif %}
+            </span>
+            <span>{{ item.title }}</span>
+            {% else %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+                {% if item.type == 2 %}
+                <a href="/article{{obj.id}}/clsdir/list{{item.id}}.html"><div>{{ item.title }}</div></a>
+                {% else %}
+                <a href="/article{{obj.id}}/clsdir/view{{item.id}}.html"><div>{{ item.title }}</div></a>
+                {% endif %}
+            {% endif %}
+            
+        </div>
+
+        <div content 
+        {% if item.expanded == None %}
+        style="display: none;"
+        {% endif %}
+        >
+
+            {% if item.type == 0 or item.type == 1 or item.type == 4 %}
+            {% set treeitems = item.items %}
+            {% include 'app/article/tree.html' %}
+            {% endif %}
+            
+        </div>
+    </li>
+    {% endfor %}
+
+    {% set treeitems_len = len(treeitems) %}
+    {% if treeitems_len == 0 %}
+    <li><div class="tree-text-div">无内容</div></li>
+    {% endif %}
+</ul>

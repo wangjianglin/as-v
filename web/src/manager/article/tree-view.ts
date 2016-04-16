@@ -7,10 +7,7 @@ import {Directory} from './directory';
 
 @Component({
     selector: 'tree-view',
-    inputs: ['directories: directories']
-})
-
-@View({
+    inputs: ['directories: directories'],
     templateUrl: './manager/article/tree-view.html',
     directives: [NgFor,TreeView,NgIf]
 })

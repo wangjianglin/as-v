@@ -2,7 +2,7 @@
 import functools
 from lin.core import web
 from com.asv.web.Services import getnavs;
-
+import traceback
 
 def view(name):
 
@@ -15,14 +15,14 @@ def view(name):
             result = None;
             try:
                 # result = function(request,*args,**kwargs)
-                d = {};
-                d[request] = request;
-                d.update(args);
-                result = web.params_injection(function,d,**kwargs);
+                # d = [];
+                # d[0] = request;
+                # d.update(args);
+                # d.append(*args);
+                result = web.params_injection(function,request,*args,**kwargs);
             except BaseException as e:
-                print(e);
-                # exstr = traceback.format_exc();
-                # print(exstr)
+                exstr = traceback.format_exc();
+                print(exstr)
             # if(result is None):
             #     result = {};
             #return dict({'contentUrl':name}.items()+result.items());

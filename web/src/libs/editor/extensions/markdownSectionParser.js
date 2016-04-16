@@ -41,130 +41,169 @@
     //     eventMgr = eventMgrParameter;
     // };
 
-    var events;
+    var markdownSectionParserFun = function() {
+        var events;
 
-    var markdownSectionParser = {};
+        // var markdownSectionParser = {};
+        var MarkdownSectionParser = function(){}
 
-    markdownSectionParser.onCreated = function(eventsParameter) {
-        events = eventsParameter;
-    }
+        // markdownSectionParser.onCreated = function(eventsParameter) {
+        MarkdownSectionParser.prototype.onCreated = function(eventsParameter) {
+            events = eventsParameter;
+        }
 
-    var sectionList = [];
-    var previewContentsElt;
+        var sectionList = [];
+        var previewContentsElt;
 
-    var editor;
-    // Regexp to look for section delimiters
-    var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
-    markdownSectionParser.onPagedownConfigure = function(editorParam) {
-        // if(markdownExtra.enabled) {
-        //     if(_.some(markdownExtra.config.extensions, function(extension) {
-        //         return extension == "fenced_code_gfm";
-        //     })) {
+        var editor;
+        // Regexp to look for section delimiters
+        var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
+        // markdownSectionParser.onPagedownConfigure = function(editorParam) {
+        MarkdownSectionParser.prototype.onPagedownConfigure = function(editorParam) {
+            // if(markdownExtra.enabled) {
+            //     if(_.some(markdownExtra.config.extensions, function(extension) {
+            //         return extension == "fenced_code_gfm";
+            //     })) {
             editor = editorParam;
 
             previewContentsElt = editor.ele.find('#preview-contents')[0];
-            
-        regexp = '^```[^`\\n]*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
-        //     }
-        // }
-        // if(mathJax.enabled) {
-        // Math delimiter has to follow 1 empty line to be considered as a section delimiter
-        regexp = '^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math block delimiters
-        regexp = '^[ \\t]*\\n\\\\\\\\[[\\s\\S]*?\\\\\\\\]|' + regexp; // \\[ \\] math block delimiters
-        regexp = '^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math block delimiters
-        // }
-        regexp = new RegExp(regexp, 'gm');
 
-        var converter = editor.markdown.getConverter();
-        // if(!partialRendering.enabled) {
-        converter.hooks.chain("preConversion", function() {
-            // debugger
-            return _.reduce(sectionList, function(result, section) {
-                return result + '\n<div class="se-preview-section-delimiter"></div>\n\n' + section.text + '\n\n';
-            }, '');
-        });
+            regexp = '^```[^`\\n]*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
+            //     }
+            // }
+            // if(mathJax.enabled) {
+            // Math delimiter has to follow 1 empty line to be considered as a section delimiter
+            regexp = '^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math block delimiters
+            regexp = '^[ \\t]*\\n\\\\\\\\[[\\s\\S]*?\\\\\\\\]|' + regexp; // \\[ \\] math block delimiters
+            regexp = '^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math block delimiters
+            // }
+            regexp = new RegExp(regexp, 'gm');
 
-        editor.markdown.hooks.chain("onPreviewRefresh", function() {
-            var wmdPreviewElt = document.getElementById("wmd-preview");
-            var childNode = wmdPreviewElt.firstChild;
+            var converter = editor.markdown.getConverter();
+            // if(!partialRendering.enabled) {
+            converter.hooks.chain("preConversion", function() {
+                // debugger
+                return _.reduce(sectionList, function(result, section) {
+                    return result + '\n<div class="se-preview-section-delimiter"></div>\n\n' + section.text + '\n\n';
+                }, '');
+            });
 
-            function createSectionElt() {
-                var sectionElt = crel('div', {
-                    class: 'wmd-preview-section preview-content'
-                });
-                var isNextDelimiter = false;
-                while (childNode) {
-                    var nextNode = childNode.nextSibling;
-                    var isDelimiter = childNode.className == 'se-preview-section-delimiter';
-                    if (isNextDelimiter === true && childNode.tagName == 'DIV' && isDelimiter) {
-                        // Stop when encountered the next delimiter
-                        break;
+            editor.markdown.hooks.chain("onPreviewRefresh", function() {
+                var wmdPreviewElt = document.getElementById("wmd-preview");
+                var childNode = wmdPreviewElt.firstChild;
+
+                function createSectionElt() {
+                    var sectionElt = crel('div', {
+                        class: 'wmd-preview-section preview-content'
+                    });
+                    var isNextDelimiter = false;
+                    while (childNode) {
+                        var nextNode = childNode.nextSibling;
+                        var isDelimiter = childNode.className == 'se-preview-section-delimiter';
+                        if (isNextDelimiter === true && childNode.tagName == 'DIV' && isDelimiter) {
+                            // Stop when encountered the next delimiter
+                            break;
+                        }
+                        isNextDelimiter = true;
+                        isDelimiter || sectionElt.appendChild(childNode);
+                        childNode = nextNode;
                     }
-                    isNextDelimiter = true;
-                    isDelimiter || sectionElt.appendChild(childNode);
-                    childNode = nextNode;
+                    return sectionElt;
                 }
-                return sectionElt;
+
+                var newSectionEltList = document.createDocumentFragment();
+                sectionList.forEach(function(section) {
+                    newSectionEltList.appendChild(createSectionElt(section));
+                });
+                previewContentsElt.innerHTML = '';
+                previewContentsElt.appendChild(wmdPreviewElt);
+                previewContentsElt.appendChild(newSectionEltList);
+            });
+            // }
+        };
+
+        // markdownSectionParser.onReady = function() {
+        //     previewContentsElt = document.getElementById("preview-contents");
+        // };
+
+        var fileDesc;
+        MarkdownSectionParser.prototype.onFileSelected = function(fileDescParam) {
+            fileDesc = fileDescParam;
+        };
+
+        var sectionCounter = 0;
+
+        function parseFileContent(fileDescParam, content) {
+            // if (fileDescParam !== fileDesc) {
+            //     return;
+            // }
+            //var frontMatter = (fileDesc.frontMatter || {})._frontMatter || '';
+            var frontMatter = '';
+            var text = content.substring(frontMatter.length);
+            var tmpText = text + "\n\n";
+
+            function addSection(startOffset, endOffset) {
+                var sectionText = tmpText.substring(offset, endOffset);
+                sectionList.push({
+                    id: ++sectionCounter,
+                    text: sectionText,
+                    textWithFrontMatter: frontMatter + sectionText
+                });
+                frontMatter = '';
             }
-
-            var newSectionEltList = document.createDocumentFragment();
-            sectionList.forEach(function(section) {
-                newSectionEltList.appendChild(createSectionElt(section));
+            sectionList = [];
+            var offset = 0;
+            // Look for delimiters
+            tmpText.replace(regexp, function(match, matchOffset) {
+                // Create a new section with the text preceding the delimiter
+                addSection(offset, matchOffset);
+                offset = matchOffset;
             });
-            previewContentsElt.innerHTML = '';
-            previewContentsElt.appendChild(wmdPreviewElt);
-            previewContentsElt.appendChild(newSectionEltList);
-        });
-        // }
-    };
-
-    // markdownSectionParser.onReady = function() {
-    //     previewContentsElt = document.getElementById("preview-contents");
-    // };
-
-    var fileDesc;
-    markdownSectionParser.onFileSelected = function(fileDescParam) {
-        fileDesc = fileDescParam;
-    };
-
-    var sectionCounter = 0;
-
-    function parseFileContent(fileDescParam, content) {
-        // if (fileDescParam !== fileDesc) {
-        //     return;
-        // }
-        //var frontMatter = (fileDesc.frontMatter || {})._frontMatter || '';
-        var frontMatter = '';
-        var text = content.substring(frontMatter.length);
-        var tmpText = text + "\n\n";
-
-        function addSection(startOffset, endOffset) {
-            var sectionText = tmpText.substring(offset, endOffset);
-            sectionList.push({
-                id: ++sectionCounter,
-                text: sectionText,
-                textWithFrontMatter: frontMatter + sectionText
-            });
-            frontMatter = '';
+            // Last section
+            addSection(offset, text.length);
+            events.onSectionsCreated(sectionList);
         }
-        sectionList = [];
-        var offset = 0;
-        // Look for delimiters
-        tmpText.replace(regexp, function(match, matchOffset) {
-            // Create a new section with the text preceding the delimiter
-            addSection(offset, matchOffset);
-            offset = matchOffset;
-        });
-        // Last section
-        addSection(offset, text.length);
-        events.onSectionsCreated(sectionList);
+
+        MarkdownSectionParser.prototype.onFileOpen = parseFileContent;
+        MarkdownSectionParser.prototype.onContentChanged = parseFileContent;
+
+        return MarkdownSectionParser;
     }
 
-    markdownSectionParser.onFileOpen = parseFileContent;
-    markdownSectionParser.onContentChanged = parseFileContent;
+
+    var MarkdownSectionParser = (function() {
+
+        // rangy.init();
+
+        function MarkdownSectionParser() {
+
+            var conFun = markdownSectionParserFun();
+
+            if (!arguments || arguments.length == 0) {
+                return new conFun();
+            }
+
+            if (arguments.length == 1) {
+                return new conFun(arguments[0]);
+            }
+
+            var cs = 'new conFun(';
+            for (var n = 0; n < arguments.length; n++) {
+                cs += 'arguments[' + n + ']';
+                if (n != arguments.length - 1) {
+                    cs += ","
+                }
+            }
+            cs += ')';
+            return eval(cs);
+
+        }
+        return MarkdownSectionParser;
+    })();
 
     window.lin = window.lin || {};
     window.lin.eventExtensions = window.lin.eventExtensions || {};
-    window.lin.eventExtensions.markdownSectionParser = markdownSectionParser;
-    return markdownSectionParser;
+    window.lin.eventExtensions.MarkdownSectionParser = MarkdownSectionParser;
+
+    return MarkdownSectionParser;
 }));

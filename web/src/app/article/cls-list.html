@@ -1,0 +1,14 @@
+
+
+{% set preUrl = '/article' + str(obj['id']) + '/cls/'  %}
+    {% set page = obj['alist'] %}
+    {% include 'app/article/list.html' %}
+
+
+    <style type="text/css">
+
+.list-content {    
+	max-width: 980px;
+    margin: 15px auto;
+}
+    </style>

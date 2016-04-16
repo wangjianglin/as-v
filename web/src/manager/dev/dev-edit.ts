@@ -6,9 +6,7 @@ import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
 
 
 @Component({
-    selector: 'dev-edit'
-})
-@View({
+    selector: 'dev-edit',
     templateUrl: './manager/dev/dev-add.html'
  //   styleUrls:['./components/dev/dev-add.css'],
 })

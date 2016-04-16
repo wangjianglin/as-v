@@ -7,9 +7,7 @@ import {RouteParams} from 'angular2/router'
 
 
 @Component({
-    selector: 'dev-classes'
-})
-@View({
+    selector: 'dev-classes',
     templateUrl: './manager/dev/classes.html'
  //   styleUrls:['./components/dev/dev-add.css'],
 })

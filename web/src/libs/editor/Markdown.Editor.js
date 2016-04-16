@@ -1,4 +1,4 @@
-﻿// needs Markdown.Converter.js at the moment
+// needs Markdown.Converter.js at the moment
 
 (function () {
 
@@ -742,7 +742,7 @@
                 inputArea.focus();
                 inputArea.selectionStart = stateObj.start;
                 inputArea.selectionEnd = stateObj.end;
-            /*
+	        /*
                 inputArea.scrollTop = stateObj.scrollTop;
 
             }
@@ -816,7 +816,7 @@
                 inputArea.value = stateObj.text;
             }
             this.setInputAreaSelection();
-            /*
+	        /*
             setTimeout(function() {
                 inputArea.scrollTop = stateObj.scrollTop;
             }, 0);
@@ -1409,8 +1409,8 @@
                 if (!noCleanup) {
                     fixupInputArea();
                     if(!linkOrImage) {
-                        inputBox.adjustCursorPosition();
-                        //inputBox.dispatchEvent(new Event('keydown'));
+	                    inputBox.adjustCursorPosition();
+	                    //inputBox.dispatchEvent(new Event('keydown'));
                     }
                 }
 
@@ -1830,7 +1830,7 @@
             }
             else {
                 if (!this.hooks.insertLinkDialog(linkEnteredCallback))
-                    ui.prompt(this.getString("linkdialog"), linkDefaultText, linkEnteredCallback);
+                	ui.prompt(this.getString("linkdialog"), linkDefaultText, linkEnteredCallback);
             }
             return true;
         }

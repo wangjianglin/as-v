@@ -1,17 +1,26 @@
+from django.core.paginator import Paginator
+
 
 class ItemsFiled(object):
-    def __init__(self,instance,attr,order_by = None):
+    def __init__(self,instance,attr,*order_by):
         self._attr = attr;
         self._order_by = order_by;
         self._instance = instance;
+        self.__cache_value = None;
 
     def __call__(self, *args, **kwargs):
         items_value = getattr(self._instance,self._attr);
         if items_value is None:
             return ;
+        if self.__cache_value is not None:
+            return self.__cache_value;
         if self._order_by is None:
             return items_value.all();
-        return items_value.all().order_by(self._order_by);
+        self.__cache_value = items_value.all().order_by(*self._order_by);
+        return self.__cache_value;
+
+    def __len__(self):
+        return len(self.__call__());
 
 
 ################################################################################################
@@ -23,7 +32,7 @@ class Items(object):
 
     # def _cls;
     # def _orderBy;
-    def __init__(self,attr,order_by = None):
+    def __init__(self,attr,*order_by):
         self._attr = attr;
         self._order_by = order_by;
 
@@ -55,7 +64,7 @@ class Items(object):
     #     return 5;
     def create_field(self,instance):
         if hasattr(self,'_order_by'):
-            return ItemsFiled(instance,self._attr,self._order_by);
+            return ItemsFiled(instance,self._attr,*self._order_by);
         return ItemsFiled(instance,self._attr,None);
 
 
@@ -345,3 +354,36 @@ class Model():
                 self.__dict__[name] = field.create_field(self);
         #         setattr(self, name, field)
 
+
+class Page():
+    def __init__(self,query,page_no,page_size):
+
+        self._page_no = page_no;
+        self._page_size = page_size;
+
+        self._paginator = Paginator(query,page_size);
+    # paginator.page(1);
+        self._p = self._paginator.page(page_no+1);
+
+    @property
+    def pageNo(self):
+        return self._p.number-1;
+
+    @property
+    def pageSize(self):
+        return self._page_size;
+
+    @property
+    def list(self):
+        return self._p.object_list;
+
+    @property
+    def count(self):
+        return self._paginator.count;
+
+
+    @property
+    def pages(self):
+        if self._paginator.count == 0:
+            return 0;
+        return self._paginator.num_pages;

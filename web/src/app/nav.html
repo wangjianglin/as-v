@@ -6,14 +6,14 @@
 	
 	<div class="top">
 <span>登录</span>
-<span>退出</span>
-<span><a href="{% static "manager.html" %}">进入</a></span>
+<!-- <span>退出</span>
+<span><a href="/manager">进入</a></span> -->
 <span>收藏</span>
 <span>关于</span>
 	</div>
 
 	<div class="nav">
-<a><div class="image"><img src="{% static "images/logo.png" %}"></div></a>
+<a><span class="image" style="float: left;"><img src="{% static "images/logo.png" %}"></span></a>
 <a href="/"
 
 {% if request.path == '/' or request.path == '/index.html' %}
@@ -21,15 +21,16 @@ class="active"
 {% endif %}
 ><div>首页</div></a>
 
+{% set url_path = request.path %}
 {% for item in navs %}
-
-<script type="text/javascript">
-	if("{{request.path}}" == "/article{{item.id}}.html"){
-		document.write('<a class="active" href="article{{item.id}}.html"><div>{{item.title}}</div></a>');
-	}else{
-		document.write('<a href="article{{item.id}}.html"><div>{{item.title}}</div></a>');
-	}
-</script>
+	{% set tmp_url_path = '/article' + str(item.id) + '.html' %}
+	{% set tmp_url_path2 = '/article' + str(item.id) + '/' %}
+	{% set tmp_url_cmp = url_path.__eq__(tmp_url_path) == 0 and url_path.startswith(tmp_url_path2)  %}
+	{% if tmp_url_cmp == True %}
+		<a class="active" href="/article{{item.id}}.html"><div>{{item.title}}</div></a>
+	{% else %}
+		<a href="/article{{item.id}}.html"><div>{{item.title}}</div></a>
+	{% endif %}
 {% endfor %}
 	</div>
 </header>

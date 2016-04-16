@@ -17,12 +17,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612">
-    <!-- <link rel="stylesheet" type="text/css" href="css/default.css"> -->
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/default.css">
     <link rel="stylesheet" type="text/css" href="css/lin.css">
     <script type="text/x-mathjax-config">
         <!-- MathJax.Ajax.config.path["libs"] = "libs"; -->
     </script>
+    <script type="text/javascript" src="libs/editor/highlight/highlight.pack.js"></script>
+    <script type="text/javascript" src="libs/raphael.js"></script>
+    <script type="text/javascript" src="libs/flowchart-1.3.4.js"></script>
     <script type="text/javascript" src="libs/prism-core.js"></script>
     <script type="text/javascript" src="libs/editor/prism-markup.js"></script>
     <script type="text/javascript" src="libs/editor/prism-latex.js"></script>
@@ -42,8 +46,12 @@
     <script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Converter.js"></script>
     <!-- <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="toMarkdown" src="res-min/bower-libs/to-markdown/src/to-markdown.js"></script> -->
     <script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Editor.js"></script>
+    <script type="text/javascript" charset="utf-8" src="libs/editor/Markdown.Extra.js"></script>
     <script type="text/javascript" src="libs/editor/extensions/markdownSectionParser.js"></script>
     <script type="text/javascript" src="libs/editor/extensions/mathJax.js"></script>
+    <script type="text/javascript" src="libs/editor/extensions/markdownExtra.js"></script>
+    <script type="text/javascript" src="libs/editor/extensions/umlDiagrams.js"></script>
+
     <!-- <script type="text/javascript" charset="utf-8" src="res-min/bower-libs/pagedown-extra/Markdown.Extra.js"></script>
  -->
     <!-- <script type="text/javascript" charset="utf-8" src="libs/editor/prism-core.js"></script>
@@ -125,7 +133,9 @@
 
         var e = new lin.Editor({
             render: document.getElementById('editorDiv'),
-            extensions: [lin.eventExtensions.markdownSectionParser,lin.eventExtensions.mathJax],
+            extensions: [new lin.eventExtensions.MarkdownSectionParser(),new lin.eventExtensions.MathJax(),
+                new lin.eventExtensions.MarkdownExtra(),
+                new lin.eventExtensions.UmlDiagrams()],
             content:'dd$\\alpha$dd'
         });
         e.init();

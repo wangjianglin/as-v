@@ -1,21 +1,18 @@
+from django.http.response import HttpResponseBase
+
 __author__ = 'lin'
 
 import functools
-import inspect;
-import json as Json
 from django.shortcuts import render
-from django.http import HttpResponse,HttpRequest,QueryDict
-from django.db import models
-from django.db.models.query import QuerySet
-from datetime import datetime,time
+from django.http import HttpResponse
 import re;
-
-
+from lin.core import utils;
+import traceback;
 from enum import Enum
+import inspect;
 
 #from lin.core import tag;
 
-__import__('lin.core.tags');
 
 #HttpMethod = Enum('ALL', 'POST','GET')
 class HttpMethod(Enum):
@@ -32,10 +29,11 @@ class HttpMethod(Enum):
 
 class RequestParam:
 
-    def __init__(self,cls,name=None,method=HttpMethod.ALL):
+    def __init__(self,cls,name=None,method=HttpMethod.ALL,default_value=None):
         self._name = name;
         self._cls = cls;
         self._method = method;
+        self._default_value = default_value;
 
 class HttpParam(RequestParam):
 
@@ -43,8 +41,8 @@ class HttpParam(RequestParam):
     #     self._name = name;
     #     self._cls = cls;
     #     self._method = method;
-    def __init__(self,cls,name=None):
-        super(HttpParam,self).__init__(cls,name,HttpMethod.HTTP);
+    def __init__(self, cls, name=None, default_value=None):
+        super(HttpParam,self).__init__(cls,name,HttpMethod.HTTP,default_value);
 
 #@staticmethod
 def __value_impl(form,name,cls):
@@ -59,10 +57,13 @@ def __value_impl(form,name,cls):
     v = form.get(name);
     if v is None or cls is None:
         return v;
+    try:
+        return cls(v);
+    except BaseException as ex:
+        pass
+    return None;
 
-    return cls(v);
-
-def __value(request,name,method,cls,param):
+def __value(request,name,method,cls,param,default_value=None):
     if name is None:
         name = param;
     # if method.value == 255:
@@ -86,6 +87,8 @@ def __value(request,name,method,cls,param):
     if method.value & HttpMethod.HEADER.value > 0:
         v = __value_impl(request.META,name,cls);
 
+        if v is None:
+            return default_value;
         return v;
 
     if method.value & HttpMethod.SESSION.value > 0:
@@ -96,52 +99,41 @@ def __value(request,name,method,cls,param):
 
     if method.value & HttpMethod.PATH.value > 0:
         v = __value_impl(request.PATH,name,cls);
+
+    if v is None:
+        return default_value;
     return v;
 
 
 class HeaderParam(RequestParam):
-    def __init__(self,cls,name=None):
-        super(HeaderParam,self).__init__(cls,name,HttpMethod.HEADER);
+    def __init__(self,cls,name=None,default_value=None):
+        super(HeaderParam,self).__init__(cls,name,HttpMethod.HEADER,default_value);
 
 class PostParam(RequestParam):
-    def __init__(self,cls,name=None):
-        super(PostParam,self).__init__(cls,name,HttpMethod.POST);
+    def __init__(self,cls,name=None,default_value=None):
+        super(PostParam,self).__init__(cls,name,HttpMethod.POST,default_value);
 
 class GetParam(RequestParam):
-    def __init__(self,cls,name=None):
-        super(GetParam,self).__init__(cls,name,HttpMethod.GET);
+    def __init__(self,cls,name=None,default_value=None):
+        super(GetParam,self).__init__(cls,name,HttpMethod.GET,default_value);
 
 class SessionParam(RequestParam):
-    def __init__(self,cls,name=None):
-        super(SessionParam,self).__init__(cls,name,HttpMethod.SESSION);
+    def __init__(self,cls,name=None,default_value=None):
+        super(SessionParam,self).__init__(cls,name,HttpMethod.SESSION,default_value);
 
 class PathParam(RequestParam):
-    def __init__(self,cls,name=None):
-        super(PathParam,self).__init__(cls,name,HttpMethod.PATH);
+    def __init__(self,cls,name=None,default_value=None):
+        super(PathParam,self).__init__(cls,name,HttpMethod.PATH,default_value);
 
-#from django.views.decorators.csrf import csrf_protect
-import sys
-#from com.asv.web import Index
-import inspect
+# import inspect
 
 #
 # class JsonResult(object):
 #     def code;
 #     pass
 
-import json
 
-class WebJSONEncoder(json.JSONEncoder):
-    def default(self,obj):
-        #convert object to a dict
-        d = {}
-        # d['__class__'] = obj.__class__.__name__
-        # d['__module__'] = obj.__module__
-        d.update(obj.__dict__)
-        if not d.get('_state') is None :
-            d.pop('_state')
 
-        return d
 # from django.utils import simplejson
 from django.db import models
 # from django.core.serializers import serialize,deserialize
@@ -150,68 +142,6 @@ from django.db.models.query import QuerySet
 # import collections;
 
 
-class ModelEncoder(json.JSONEncoder):
-    """ 继承自simplejson的编码基类，用于处理复杂类型的编码
-    """
-    def default(self,obj):
-        if isinstance(obj,QuerySet):
-            """ Queryset实例
-            直接使用Django内置的序列化工具进行序列化
-            但是如果直接返回serialize('json',obj)
-            则在simplejson序列化时会被从当成字符串处理
-            则会多出前后的双引号
-            因此这里先获得序列化后的对象
-            然后再用simplejson反序列化一次
-            得到一个标准的字典（dict）对象
-            """
-            #return json.loads(serialize('json',obj))
-            # s = serialize('json',obj);
-            # return Json.load(s);
-            # collections.Container()
-
-            # l = len(obj);
-            # d = [];
-            # for i in range(0,l):
-            #     d.append(obj[i]);
-            # return d;
-            return list(obj);
-
-        if isinstance(obj,models.Model):
-            """
-            如果传入的是单个对象，区别于QuerySet的就是
-            Django不支持序列化单个对象
-            因此，首先用单个对象来构造一个只有一个对象的数组
-            这是就可以看做是QuerySet对象
-            然后此时再用Django来进行序列化
-            就如同处理QuerySet一样
-            但是由于序列化QuerySet会被'[]'所包围
-            因此使用string[1:-1]来去除
-            由于序列化QuerySet而带入的'[]'
-            """
-            #return json.loads(serialize('json',[obj])[1:-1])
-            d = {}
-            # d['__class__'] = obj.__class__.__name__
-            # d['__module__'] = obj.__module__
-            #d.update(obj.__dict__)
-            for key,value in obj.__dict__.items():
-                if key.startswith('_'):
-                    continue;
-                d[key] = value;
-            # if not d.get('_state') is None :
-            #     d.pop('_state')
-
-            return d
-        if isinstance(obj,datetime):
-            return obj.microsecond + obj.timestamp() * 1000;
-
-        if hasattr(obj, 'isoformat'):
-            #处理日期类型
-            return obj.isoformat()
-
-        if hasattr(obj,'__get__') or hasattr(obj,'__call__'):
-            return obj();
-        return json.JSONEncoder.default(self,obj)
-
 def params_injection(fun,*args,**kwargs):
     request = args[0];
             # kwargs['id'] = 10;
@@ -219,19 +149,34 @@ def params_injection(fun,*args,**kwargs):
 
     has_request = False;
     annons = fun.__annotations__;
-    for arg in arg_spce.args + arg_spce.kwonlyargs:
+
+    arg_defaults = arg_spce.defaults;
+    arg_defaults_len = 0;
+    if arg_defaults is not None:
+        arg_defaults_len = len(arg_defaults);
+
+    args_arr = arg_spce.args;# + arg_spce.kwonlyargs;
+    args_len = len(args_arr);
+    arg_index = 0;
+    for arg in args_arr:
+        arg_index += 1;
         if arg == 'request':
             has_request = True;
             continue;
+
+        arg_value = None;
         if arg in annons:
             param_value = annons[arg];
             param_type = type(param_value);
             if param_type is type:
-                kwargs[arg] = __value(request,arg,HttpMethod.HTTP,param_value,None);
+                arg_value = __value(request,arg,HttpMethod.HTTP,param_value,None);
             elif issubclass(param_type,RequestParam):
-                kwargs[arg] = __value(request,param_value._name,param_value._method,param_value._cls,arg);
+                arg_value = __value(request,param_value._name,param_value._method,param_value._cls,arg, param_value._default_value);
         else:
-            kwargs[arg] = __value(request,arg,HttpMethod.HTTP,None,None);
+            arg_value = __value(request,arg,HttpMethod.HTTP,None,None);
+
+        if arg_value is not None or arg_index + arg_defaults_len <= args_len:
+            kwargs[arg] = arg_value;
 
     # for param,paramValue in function.__annotations__.items():
     #     if type(paramValue) is type:
@@ -255,7 +200,8 @@ def json(function):
             result = params_injection(function,*args,**kwargs);
         except BaseException as e:
             result = None;
-            print(e);
+            exstr = traceback.format_exc();
+            print(exstr)
         #print('result:'+result)
         # return HttpResponse(str(result));
         # _default_encoder = json.JSONEncoder(
@@ -273,9 +219,11 @@ def json(function):
 
         json_str = None;
         try:
-            json_str = Json.dumps({'code':0,'result':result},cls=ModelEncoder);
+            json_str = utils.json({'code':0,'result':result});
         except BaseException as e:
             print(e);
+            exstr = traceback.format_exc();
+            print(exstr)
             json_str = '{code:-2}';
 
         return HttpResponse(json_str,content_type="application/json",charset="utf-8");
@@ -283,7 +231,7 @@ def json(function):
 
     return wrapper;
 
-def view(name):
+def view(name = None):
     #print(name)
     # print('000000000000000000000000000')
     # return function
@@ -303,7 +251,12 @@ def view(name):
             except BaseException as e:
                 print(e);
             #if(result is None):
-
+            if result is None:
+                return HttpResponse('');
+            if issubclass(type(result),HttpResponseBase):
+                return result;
+            if name is None:
+                return HttpResponse(result);
             return render(args[0], name,result)
         return wrapper;
     return func;
@@ -312,7 +265,7 @@ paths = {}
 paths_pattern = {}
 paths_params = {}
 # paths_params_pattern = {};
-__mseach = re.compile(r'{(\w|\d)*}');
+__mseach = re.compile(r'{(?:\w|\d)*}');
 
 def __search(name):
     # s = re.compile(r'{(?:\w|\d)*}')
@@ -324,20 +277,30 @@ def __search(name):
         return None;
     params = [];
     prePos = 0;
+    url_pattern = '^';
+
     while not param is None:
-        params.append((name[param.regs[0][0]+1:param.regs[0][1]-1],param.regs[0][0]-prePos));
-        prePos = param.regs[0][1] + 1;
+        param_name = name[param.regs[0][0]+1:param.regs[0][1]-1];
+        url_pattern += name[prePos:param.regs[0][0]];
+        if param_name.startswith("?"):#这样运算次数会少些
+            if param_name.startswith("?wd:") or param_name.startswith("?dw:"):
+                param_name = param_name[4,len(param_name)];
+                url_pattern += '(\w|\d){1,}';
+            elif param_name.startswith("?w:"):
+                param_name = param_name[3,len(param_name)];
+                url_pattern += '(\w){1,}';
+            else:
+                url_pattern += '(\d){1,}';
+        else:
+            url_pattern += '(\d){1,}';
+        params.append((param_name,param.regs[0][0]-prePos));
+        prePos = param.regs[0][1]# + 1;
         param = __mseach.search(name,param.regs[0][1]);
-
-    return params;
-
-
-
+    url_pattern += name[prePos:len(name)] + '$';
+    return (params,url_pattern);
 
 def path(name):
-    #print(name)
-    # print('000000000000000000000000000')
-    # return function
+
     def wrapper(function):
         # v = "a";
         # v.__len__()
@@ -351,10 +314,11 @@ def path(name):
         if not params is None:
             #paths[n] = re.compile(__mseach.sub("{(\w|d)*}",n))
             # paths_params_string = __mseach.sub("(\w|d)*",n);
-            m = re.compile('^' + __mseach.sub("(\w|d)*",n) + '$');
+            # m = re.compile('^' + __mseach.sub("(\w|d)*",n) + '$');
+            m = re.compile(params[1]);
             paths_pattern[m] = function;
 
-            paths_params[m] = params;
+            paths_params[m] = params[0];
 
         else:
             paths[n] = function;
@@ -379,9 +343,12 @@ def _machpath(name):
             params = {};
 
             for n in range(1, len(regs)):
-
-                params[params_name[n-1][0]] = name[pre_pos+params_name[n-1][1]:regs[n][1]];
-                pre_pos = regs[n][1] + 1;
+                if regs[n][0] == -1:
+                    params[params_name[n-1][0]] = '';
+                    pre_pos += params_name[n-1][1]
+                else:
+                    params[params_name[n-1][0]] = name[pre_pos+params_name[n-1][1]:regs[n][1]];
+                    pre_pos = regs[n][1]# + 1;
 
             return (paths_pattern[m],params);
 
@@ -389,6 +356,7 @@ def _machpath(name):
 
 
 def __fun(request,name):
+    name = name.replace('//','/');
     fun = _machpath(name);
 
     if fun is None:
