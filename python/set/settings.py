@@ -91,13 +91,15 @@ STATIC_URL = '/s/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #print(STATIC_ROOT)
 STATICFILES_DIRS = (
+    # os.path.join(BASE_DIR, "./static"),
     os.path.join(BASE_DIR, "../dist/static"),
     # os.path.join(BASE_DIR, "../web/dist"),
 )
 
 TEMPLATE_DIRS = (
 # './templates',
-    os.path.join(BASE_DIR, "../dist/static"),
+    os.path.join(BASE_DIR, "./static"),
+    os.path.join(BASE_DIR, "../dist/static")
 )
 
 # TEMPLATE_CONTEXT_PROCESSORS = (

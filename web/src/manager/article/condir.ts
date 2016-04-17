@@ -214,21 +214,23 @@ export class ConDir implements OnInit{
     }
 
     removeNode(treeId, treeNode){
-        var r = confirm('是否确定要删除“'+treeNode.title+'”？')
-        if(!r){
-            return;
-        }
-        lin.http.communicate({
-            url: 'article/delete_byid.action',
-            params: {
-                id: treeNode.id
-            }, result: (e) => {
-                console.log(this);
-                this.tree.removeNode(treeNode);
-                // treeNode.title = newName;
-                // this.tree.refresh();
-            }, fault: (e) => {
-                console.log(e);
+        confirm('是否确定要删除“'+treeNode.title+'”？',(r)=>{
+            
+            if(!r){
+                return;
+            }
+            lin.http.communicate({
+                url: 'article/delete_byid.action',
+                params: {
+                    id: treeNode.id
+                }, result: (e) => {
+                    console.log(this);
+                    this.tree.removeNode(treeNode);
+                    // treeNode.title = newName;
+                    // this.tree.refresh();
+                }, fault: (e) => {
+                    console.log(e);
+                }
             }
         });
     }

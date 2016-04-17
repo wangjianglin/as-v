@@ -3,9 +3,11 @@
 {% load i18n static %}
 <style type="text/css">
 .article-view {
+   /* margin: 0px auto;*/
     max-width: 980px;
-    margin: 0px auto;
 }
+
+
 
 .article-view .title {
     font: normal 20px/30px 'Microsoft YaHei';
@@ -52,7 +54,7 @@
 <script type="text/javascript" src="{% static "libs/editor/extensions/markdownExtra.js" %}"></script>
 <script type="text/javascript" src="{% static "libs/editor/extensions/umlDiagrams.js" %}"></script>
 <!-- <link rel="stylesheet" type="text/css" href="{% static "css/lin.css" %}"> -->
-<div class="article-view editor">
+<div class="article-view-inner article-view editor">
     <div class="title">
         {{article.title}}
     </div>

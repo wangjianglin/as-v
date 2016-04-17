@@ -4,16 +4,16 @@ from lin.core.models import Page
 
 
 def getnavs():
-    r = ArticleClass.objects.select_related().all().filter(parent=None,show=True).order_by('order','-date')#.order_by('-date');
+    r = ArticleClass.objects.select_related().all().filter(parent=None,show=True).order_by('order','date')#.order_by('-date');
     # # r = Dev.objects.all().order_by('order')#.values_list('id','title','order','dev_id');
     return r;
 
 def article_class_list(id):
-    r = ArticleClass.objects.select_related().all().filter(parent=id,show=True).order_by('order','-date')#.order_by('-date');
+    r = ArticleClass.objects.select_related().all().filter(parent=id,show=True).order_by('order','date')#.order_by('-date');
     return r;
 
 def article_list(id):
-    return Article.objects.all().filter(article_class_id=id).order_by('-date').values('id','title','abstract','date','modifyDate','browse','show');
+    return Article.objects.all().filter(article_class_id=id).order_by('date').values('id','title','abstract','date','modifyDate','browse','show');
 
 def article_public_list(id,page_no=0,page_size=12):
     r = Article.objects.all().filter(article_class_id=id,show=True).order_by('-modifyDate').values('id','title','abstract','date','modifyDate','browse','userName');

@@ -77,7 +77,7 @@ def article_clsdir_list(request,id:web.PathParam(int,'id'),aid:web.PathParam(int
 
     article = Services.article_view_bycid(aid,True);
     # return (utils.json(clist),alist);
-    return {'clist':clist,'article':article,'id':id,'aid':aid,'vid':article.id,'list':False};
+    return {'clist':clist,'article':article,'id':id,'aid':aid,'vid':aid,'list':False};
 
 @web.path('article{id}/clsdir/list{aid}/view{vid}.html')
 @web.path('article{id}/clsdir/list{aid}/{page}/view{vid}.html')

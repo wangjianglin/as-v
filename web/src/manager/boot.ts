@@ -75,7 +75,7 @@ class Boot {
 
     constructor(@Inject(Router)router: Router, @Inject(Location)location: Location) {
     //constructor(){
-        lin.http.commUrl = 'http://localhost:8000';
+        //lin.http.commUrl = 'http://localhost:8000';
         this.router = router;
         this.location = location;
     }

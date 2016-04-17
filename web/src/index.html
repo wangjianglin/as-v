@@ -40,7 +40,21 @@
 <body style="overflow: hidden;">
 
 {% include 'app/nav.html' %}
-<div style="min-height: 3000px">
+<div style="min-height: 3000px;display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+
+  -webkit-align-items: stretch;
+  -moz-align-items: stretch;
+  -ms-align-items: stretch;
+  align-items: stretch;
+">
 {% include asv_content_url%}
 </div>
 <script type="text/javascript">
