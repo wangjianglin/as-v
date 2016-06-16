@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import re;
 from lin.core import utils;
+from lin.lin import LinException;
 import traceback;
 from enum import Enum
 import inspect;
@@ -196,12 +197,21 @@ def params_injection(fun,*args,**kwargs):
 def json(function):
     @functools.wraps(function)
     def wrapper(*args,**kwargs):
+
+
+        json_str = None;
+        status = 200;
         try:
             result = params_injection(function,*args,**kwargs);
         except BaseException as e:
             result = None;
-            exstr = traceback.format_exc();
-            print(exstr)
+            # exstr = traceback.format_exc();
+            # print(exstr)
+            status = 600
+            if issubclass(type(e),LinException):
+                json_str = utils.json({'code':e.code,'message':e.message,'cause':e.cause});
+            else:
+                json_str = utils.json({'code':-1,'message':'未知异常','cause':str(e),'stackTrace':traceback.format_exc()});
         #print('result:'+result)
         # return HttpResponse(str(result));
         # _default_encoder = json.JSONEncoder(
@@ -217,16 +227,17 @@ def json(function):
         # d = _default_encoder
         # return HttpResponse(Json.dumps(result,cls=WebJSONEncoder),content_type="application/json")
 
-        json_str = None;
-        try:
-            json_str = utils.json({'code':0,'result':result});
-        except BaseException as e:
-            print(e);
-            exstr = traceback.format_exc();
-            print(exstr)
-            json_str = '{code:-2}';
+        if json_str is None:
+            try:
+                json_str = utils.json({'code':0,'result':result});
+            except BaseException as e:
+                print(e);
+                status = 600
+                exstr = traceback.format_exc();
+                print(exstr)
+                json_str = '{code:-2}';
 
-        return HttpResponse(json_str,content_type="application/json",charset="utf-8");
+        return HttpResponse(json_str,content_type="application/json",charset="utf-8",status=status);
         # return HttpResponse(Json.dumps({'code':0,'result':result}),content_type="application/json")
 
     return wrapper;
@@ -325,11 +336,18 @@ def path(name):
         return function
     return wrapper;
 
+__view_models = []
+__is_view_models = False
+
 def _machpath(name):
 
+    if not __is_view_models:
+        for model in __view_models:
+            __import__(model)
+
     fun = paths.get(name);
-    if not fun is None:
-        return (fun,None);
+    if fun is not None:
+        return (fun,None)
 
     for m in paths_pattern:
         if not m.match(name) is None:
@@ -382,6 +400,10 @@ def html(request,name):
     # fun = paths[name+'.html'];
     # fun = _machpath(name + '.html');
     # return fun(request)
+    # addViewModel('com.asv.web.Index');
+    #
+    # addViewModel('com.asv.web.Article');
+    # addViewModel('com.asv.web.ArticleView');
     return __fun(request,name + '.html');
 
 
@@ -437,4 +459,5 @@ if __name__ == '__main__':
 
 def addViewModel(model):
     # sys.modules[model]
-    __import__(model)
+    __view_models.append(model);
+    # __import__(model)

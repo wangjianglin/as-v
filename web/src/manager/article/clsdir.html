@@ -1,16 +1,36 @@
 
 
 <style type="text/css">
+:host{
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	-webkit-box-flex: 1;
+    - moz - flex: 1;
+    -ms - flex: 1;
+    -webkit - flex: 1;
+    flex: 1;
+
+	}
 	.dev-list{
 	display: -webkit-box;
 	display: -moz-box;
 	display: -o-box;
 	display: -ms-box;
 	display: box;
+
+	-webkit-box-flex: 1;
+    - moz - flex: 1;
+    -ms - flex: 1;
+    -webkit - flex: 1;
+    flex: 1;
 }
 .dev-list-left{
 	min-width: 200px;
 	min-height: 400px;
+	background-color: #ebebeb;
 }
 
 .dev-list-right{
@@ -41,9 +61,9 @@
 <ul id="article-class-tree" class="ztree"></ul>
 
 </div>
-<div style="width: 2px;
+<!-- <div style="width: 2px;
     background-color: #bababa;
-    min-height: 514px;"></div>
+    min-height: 514px;"></div> -->
 <div class="dev-list-right">
 <!-- ok<br/>{{name}}<br>
 列表内容 -->

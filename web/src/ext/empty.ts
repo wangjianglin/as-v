@@ -1,6 +1,6 @@
 
 import {Component,OnInit,ElementRef,Inject,Injector,
-    provide} from 'angular2/core';
+    provide} from '@angular/core';
 
 
 

@@ -1,7 +1,7 @@
 
-import {Component, View,Inject} from 'angular2/core';
+import {Component, View,Inject} from '@angular/core';
 
-import {RouteParams,Router} from 'angular2/router'
+import {RouteParams, Router} from '@angular/router-deprecated'
 
 declare var lin:any;
 
@@ -33,10 +33,10 @@ export class List {
     }
 
     addArticle() {
-    	this.router.parent.navigate( ['./Edit', { cid:this.params.params.id id: 0 }] );
+    	this.router.parent.navigate( ['./Edit', { cid:this.params.params.id,id: 0 }] );
     }
 
     editArticle(id) {
-        this.router.parent.navigate( ['./Edit', { cid:this.params.params.id id: id }] );
+        this.router.parent.navigate( ['./Edit', { cid:this.params.params.id,id: id }] );
     }
 }

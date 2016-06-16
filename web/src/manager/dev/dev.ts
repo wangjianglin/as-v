@@ -1,8 +1,8 @@
 
 import {Component,OnInit,ElementRef,Inject,Injector,
-    provide} from 'angular2/core';
+    provide} from '@angularcore';
 
-import {NgFor,NgIf} from 'angular2/common'
+import {NgFor, NgIf} from '@angular/common'
 
 import {RouteParams,
     RouteData,
@@ -10,7 +10,7 @@ import {RouteParams,
     Route,
     RouteConfig,
     ROUTER_DIRECTIVES,
-    AsyncRoute} from 'angular2/router';
+    AsyncRoute} from '@angular/router';
 
 
 import {TreeView} from './tree-view';

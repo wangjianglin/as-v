@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>as-v admin console</title>
-
+    <title>ad-v 我的控台</title>
+<base href="">
 <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/default.css">
     <link rel="stylesheet" type="text/css" href="css/lin.css">
@@ -15,9 +15,9 @@
 <script type="text/javascript" src="libs/jquery/ztree/js/jquery.ztree.all.min.js"></script>
 
 <script type="text/javascript" src="libs/lin-bootstrap.js"></script>
-<script type="text/javascript" src="libs/angular2-polyfills.js"></script>
+<!-- <script type="text/javascript" src="libs/angular2-polyfills.js"></script> -->
 
-<script type="text/javascript" src="libs/system.src.js"></script>
+<!-- <script type="text/javascript" src="libs/system.src.js"></script> -->
 <script type="text/javascript" src="libs/lin.js"></script>
 
     <script type="text/javascript" src="libs/bootstrap.js"></script>
@@ -59,59 +59,62 @@
 <script type="text/javascript">
 
 
-  var typescriptOptions ={
-        noImplicitAny: true,
-            // module: 'system',
-            module: 'umd',//commonjs commonjs', 'amd', 'umd' or 'system'.
-            target: 'ES5',
-            declaration:true,
-            emitDecoratorMetadata: true,
-            experimentalDecorators: true
-    };
+ //  var typescriptOptions ={
+ //        noImplicitAny: true,
+ //            // module: 'system',
+ //            module: 'umd',//commonjs commonjs', 'amd', 'umd' or 'system'.
+ //            target: 'ES5',
+ //            declaration:true,
+ //            emitDecoratorMetadata: true,
+ //            experimentalDecorators: true
+ //    };
 
-   var extension = 'min.js';
-   if(window.params.ts == 'true'){
-    extension = 'ts';
-   }else if(window.debug){
-    extension = 'js';
-   }
+ //   var extension = 'min.js';
+ //   if(window.params.ts == 'true'){
+ //    extension = 'ts';
+ //   }else if(window.debug){
+ //    extension = 'js';
+ //   }
 
-	System.config({
-    transpiler: 'typescript',
+	// System.config({
+ //    transpiler: 'typescript',
     
-		defaultJSExtensions: false,
-    // defaultExtension:'.ts'
-    packages: {        
-          manager: {
-            transpiler: 'typescript',
-            //format: 'register',
-            defaultExtension: extension
-          },    
-          ext: {
-            transpiler: 'typescript',
-            //format: 'register',
-            defaultExtension: extension
-          }
-        },
-		// ,
-		map: {
-      jquery: 'libs/jquery.js',
-      lin:'libs/lin.js',
-      typescript: 'libs/typescript.js',
-      BootstrapModal: 'libs/BootstrapModal.js',
-      ext: 'ext/angular2-ext.' + extension
-    }
-	});
+	// 	defaultJSExtensions: false,
+ //    // defaultExtension:'.ts'
+ //    packages: {        
+ //          manager: {
+ //            transpiler: 'typescript',
+ //            //format: 'register',
+ //            defaultExtension: extension
+ //          },    
+ //          ext: {
+ //            transpiler: 'typescript',
+ //            //format: 'register',
+ //            defaultExtension: extension
+ //          }
+ //        },
+	// 	// ,
+	// 	map: {
+ //      jquery: 'libs/jquery.js',
+ //      lin:'libs/lin.js',
+ //      typescript: 'libs/typescript.js',
+ //      BootstrapModal: 'libs/BootstrapModal.js',
+ //      ext: 'ext/angular2-ext.' + extension
+ //    }
+	// });
 
 </script>
 
 </head>
 
-<body style="position: absolute;top: 0px;left: 0px;bottom: 0px;right: 0px;">
+<body style="position: absolute;top: 0px;left: 0px;bottom: 0px;right: 0px;overflow: hidden;">
 <boot>
-<div style="width:100%;height:100%;margin-top:50%;">
-<div style="margin:0px auto;width:100px;margin-top:-20px;">
-Loading...
+<div style="width:100%;display: flex;
+  justify-content: center;
+    height: 100%;
+    align-items: center;">
+<div style="width:300px;height:20px;text-align: center;">
+正努力为您加载，请稍等...
 
 </div>
 
@@ -119,9 +122,18 @@ Loading...
 
 </boot>
 
-<script type="text/javascript" src="libs/Rx.js"></script>
+<!-- <script type="text/javascript" src="libs/Rx.js"></script>
 <script type="text/javascript" src="libs/angular2.dev.js"></script>
-<script type="text/javascript" src="libs/router.dev.js"></script>
+<script type="text/javascript" src="libs/router.dev.js"></script> -->
+
+ <!-- 1. Load libraries -->
+     <!-- Polyfill(s) for older browsers -->
+    <script src="libs/shim.js"></script>
+    <script src="libs/zone.js"></script>
+    <script src="libs/Reflect.js"></script>
+    <script src="libs/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="manager/systemjs.config.js"></script>
 
 <script>
     System.import('manager/boot').then(function (boot) {

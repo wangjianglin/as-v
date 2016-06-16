@@ -20,7 +20,7 @@
 
 import {
 	Injectable
-} from 'angular2/core';
+} from '@angular/core';
 //等版本稳定后，采用 angular2-modal 实现
 @Injectable()
 export class Http {

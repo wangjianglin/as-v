@@ -1,7 +1,7 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
-import {RouteParams} from 'angular2/router';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+// import {RouteParams} from '@angular/router';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 
 @Component({
@@ -9,7 +9,6 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
     directives:[ROUTER_DIRECTIVES],
     templateUrl: './manager/home.html'
 })
-
 export class Home {
     //id: string;
     //constructor(params: RouteParams){

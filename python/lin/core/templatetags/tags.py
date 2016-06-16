@@ -1,3 +1,4 @@
+
 from django import template
 import re
 from django.template import base
@@ -6,6 +7,9 @@ import traceback;
 register = template.Library()
 
 set_regex = re.compile(r'^\s*set\s+(\w+)\s*=\s*(.*)$')
+
+# @register.tag('set')
+@register.tag('set')
 def do_set(parser, token):
     m = re.match(set_regex, token.contents)
     if m:
@@ -42,7 +46,7 @@ class SetNode(template.Node):
         # context[self.varname] = pre_obj;
         return '';
 
-register.tag('set', do_set)
+# register.tag('set', do_set)
 
 
 
@@ -69,6 +73,7 @@ class PrintNode(template.Node):
 
 
 import_regex = re.compile(r'^\s*import\s+(\S+)(?:\s+as\s+(\w+))?$')
+@register.tag('import')
 def do_import(parser, token):
     m = re.match(import_regex, token.contents)
     if m:
@@ -92,7 +97,7 @@ class ImportNode(template.Node):
         context[self.alias] = module
         return ''
 
-register.tag('import', do_import)
+# register.tag('import', do_import)
 
 
 @register.filter(name='js')
@@ -106,4 +111,4 @@ def do_print(value, arg=None):
 
     return "'" + value + "'";
 
-base.add_to_builtins('lin.core.tags')
+# base.add_to_builtins('lin.core.tags')

@@ -8,18 +8,31 @@ var concat = require('gulp-concat');
 var PATHS = {
     src: 'src/**/*.ts',
     typings: 'node_modules/angular2/bundles/typings/**/*.d.ts',
-
+// <script src="node_modules/core-js/client/shim.min.js"></script>
+//     <script src="node_modules/zone.js/dist/zone.js"></script>
+//     <script src="node_modules/reflect-metadata/Reflect.js"></script>
+//     <script src="node_modules/systemjs/dist/system.src.js"></script>
     libs: [
-        "node_modules/angular2/bundles/angular2.dev.js",
-        "node_modules/angular2/bundles/router.dev.js",
+        // "node_modules/angular2/bundles/angular2.dev.js",
+        // "node_modules/angular2/bundles/router.dev.js",
+        // "node_modules/systemjs/dist/system.src.js",
+        // "node_modules/systemjs/dist/system-polyfills.js",
+        // "node_modules/jquery/dist/jquery.js",
+        // "node_modules/rxjs/bundles/Rx.js",
+        // "node_modules/angular2/bundles/angular2-polyfills.js",
+        // "node_modules/typescript/lib/typescript.js",
+        // "node_modules/rxjs/bundles/Rx.umd.js",
+        // "node_modules/angular2/bundles/angular2-all.umd.js",
+
+        "node_modules/core-js/client/shim.min.js",
+        "node_modules/core-js/client/shim.js",
         "node_modules/systemjs/dist/system.src.js",
         "node_modules/systemjs/dist/system-polyfills.js",
+        "node_modules/zone.js/dist/zone.js",
+        "node_modules/reflect-metadata/Reflect.js",
+
         "node_modules/jquery/dist/jquery.js",
-        "node_modules/rxjs/bundles/Rx.js",
-        "node_modules/angular2/bundles/angular2-polyfills.js",
-        "node_modules/typescript/lib/typescript.js",
-        "node_modules/rxjs/bundles/Rx.umd.js",
-        "node_modules/angular2/bundles/angular2-all.umd.js",
+
         "node_modules/bootstrap/dist/js/bootstrap.js",
         "bower_components/underscore/underscore.js",
         "bower_components/rangy/rangy-core.js",
@@ -208,6 +221,12 @@ gulp.task('default',['clean'], function () {
     gulp.src("src/images/**")
         .pipe(gulp.dest(PATHS.dist+"images/"))
 
+gulp.src("node_modules/@angular/**")
+        .pipe(gulp.dest(PATHS.dist+"libs/angular/"))
+gulp.src("node_modules/angular2-in-memory-web-api/**")
+        .pipe(gulp.dest(PATHS.dist+"libs/angular2-in-memory-web-api/"))
+gulp.src("node_modules/rxjs/**")
+        .pipe(gulp.dest(PATHS.dist+"libs/rxjs/"))
     var isTs = gulp.env.ts;
 
     gulp.run('images');

@@ -4,6 +4,33 @@ from lin.core import web
 from com.asv.web.Services import getnavs;
 import traceback
 
+class ViewResult:
+
+    @property
+    def result(self):
+        return self._resutl;
+
+    @result.setter
+    def setresult(self, value):
+        self._result = value;
+
+    @property
+    def title(self):
+        return self._title;
+
+    @title.setter
+    def settitle(self, value):
+        self._title = value;
+
+    @property
+    def keywords(self):
+        return self._keywords
+
+    @keywords.setter
+    def setkeywords(self, value):
+        self._keywords = value;
+
+
 def view(name):
 
     def func(function):
@@ -38,7 +65,13 @@ def view(name):
             #r['obj'] = result;
             if result is not None:
                 #r.update(result);
-                r['obj'] = result;
+                if issubclass(type(result),ViewResult):
+                    r['keywords'] = result.keywords
+                    r['title'] = result.title
+                    r['obj'] = result.result;
+                else:
+                    r['obj'] = result;
             return r;
         return wrapper;
     return func;
+

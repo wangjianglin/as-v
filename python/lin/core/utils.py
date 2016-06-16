@@ -73,6 +73,9 @@ class ModelEncoder(Json.JSONEncoder):
             #return obj.microsecond + obj.timestamp() * 1000;
             return int(obj.timestamp()*1000)
 
+        if isinstance(obj,bytes):
+            return obj.decode();
+
         if hasattr(obj, 'isoformat'):
             #处理日期类型
             return obj.isoformat()

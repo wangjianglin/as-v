@@ -1,7 +1,7 @@
 
-import {Component,View,EventEmitter,Output,Input} from 'angular2/core';
+import {Component, View, EventEmitter, Output, Input} from '@angular/core';
 
-import {NgFor,NgIf} from 'angular2/common'
+import {NgFor, NgIf} from '@angular/common'
 
 import {Directory} from './directory';
 

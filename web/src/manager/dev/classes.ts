@@ -1,8 +1,8 @@
 
-import {Component, View,Inject} from 'angular2/core';
-import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
+import {Component, View,Inject} from '@angular/core';
+// import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
 
-import {RouteParams} from 'angular2/router'
+import {RouteParams} from '@angular/router'
 
 
 

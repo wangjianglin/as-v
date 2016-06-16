@@ -1,5 +1,5 @@
 
-import {Component, View} from 'angular2/core';
+import {Component, View} from '@angular/core';
 
 
 

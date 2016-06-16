@@ -1,6 +1,6 @@
 
-import {Component, View} from 'angular2/core';
-import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
+import {Component, View} from '@angular/core';
+// import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
 
 
 

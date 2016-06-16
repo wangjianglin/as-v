@@ -836,7 +836,7 @@
                 if (xmlRequest.readyState != 4) {
                     return;
                 }
-                if (xmlRequest.status < 300) {
+                if (xmlRequest.status < 300 || xmlRequest.status >= 600) {
                     config.responseType = config.responseType || 'text';
                     if (config.responseType.toLowerCase() === 'xml') {
                         var resultString = xmlRequest.responseXML;

@@ -4,21 +4,21 @@ import {
     Provider,
     Inject,
     APPLICATION_COMMON_PROVIDERS
-} from 'angular2/core';
+} from '@angular/core';
 
-import {CORE_DIRECTIVES,FORM_DIRECTIVES} from 'angular2/common'
-import {bootstrap}    from 'angular2/platform/browser'
+import {CORE_DIRECTIVES, FORM_DIRECTIVES,
+    LocationStrategy,
+    HashLocationStrategy,
+    Location} from '@angular/common'
+import {bootstrap}    from '@angular/platform-browser-dynamic'
 import {
     ROUTER_DIRECTIVES, 
     RouteConfig, 
-    Location,
-    ROUTER_PROVIDERS, 
-    LocationStrategy, 
-    HashLocationStrategy, 
+    ROUTER_PROVIDERS,  
     Route, 
     AsyncRoute, 
     Router
-} from 'angular2/router';
+} from '@angular/router-deprecated';
 
 import {App} from './app';
 
@@ -57,27 +57,29 @@ declare var System:any;
  //   viewProviders: [NameList],
  //   templateUrl: './app/app.html',
  //   styleUrls:['css/site.css'],
-    directives: [ROUTER_DIRECTIVES,LoggedInRouterOutlet]
+    directives: [LoggedInRouterOutlet]
 })
 @RouteConfig([
-    {path: '/', name: 'root', redirectTo: ['App','Home']},
-    new Route({path: '/app/...', component: App, name: 'App'}),
-    new Route({path: '/login', component: Login, name: 'Login'})
+    { path: '/', name: 'root', redirectTo: ['App', 'Home'] },
+    new Route({ path: '/app/...', component: App, name: 'App' }),
+    new Route({ path: '/login', component: Login, name: 'Login' })
     // ,
     // new AsyncRoute({path: '/about', 
     //     loader: () => ComponentHelper.LoadComponentAsync('About','./app/about')
     //     , name: 'About'})
 ])
-
 class Boot {
-    router: Router;
-    location: Location;
+    // router: Router;
+    // location: Location;
 
-    constructor(@Inject(Router)router: Router, @Inject(Location)location: Location) {
-    //constructor(){
+    constructor(router: Router, location: Location) {
+    // constructor(router: Router) {
+    // constructor(){
         //lin.http.commUrl = 'http://localhost:8000';
-        this.router = router;
-        this.location = location;
+    //     debugger
+        lin.http.commUrl = window.params.url || '';
+    //     this.router = router;
+    //     this.location = location;
     }
 
 
@@ -85,7 +87,7 @@ class Boot {
 
 
 export function main(){
-	//bootstrap(App);
+	// bootstrap(Boot);
     bootstrap(Boot, [
         ROUTER_PROVIDERS,
         //Modal 开始

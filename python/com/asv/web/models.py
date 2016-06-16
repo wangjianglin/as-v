@@ -26,16 +26,28 @@ class ArticleClass(models.Model,lin_models.Model):
 
     items = lin_models.Items("children_items",'order','date');
 
-    type = models.IntegerField(db_column='node_type',default=0); #0:分类目录  1:内容目录   2:分类    3:内容    4:子内容目录
+    #0:分类目录  1:内容目录   2:分类    3:内容    4:子内容目录
+    type = models.IntegerField(db_column='node_type',default=0);
 
+    #用以标识同一种分类不同的用途
+    code = models.CharField(db_column="article_code", max_length=32, null=True)
+
+    #此分类的拥有者
+    own = models.CharField(db_column="article_own", max_length=32, null=True)
+
+    isDelete = models.BooleanField(db_column="is_delete", default=False)
+
+    desc = models.CharField(db_column="class_desc", max_length=256, null=True)
     # class Meta:
     #     permissions = (
     #         ("can_drive", "Can drive"),
     #         ("can_vote", "Can vote in elections"),
     #         ("can_drink", "Can drink alcohol"),
     #     )
+
     class Meta:
         db_table = 'asv_article_class'
+        # app_label = 'asv'
 
 
 class Article(models.Model):
@@ -56,9 +68,9 @@ class Article(models.Model):
 
     article_class = models.ForeignKey(ArticleClass, related_name='class_id')
 
-
-
-    # type = models.IntegerField(db_column='article_type',default=0); #文章类型  0:原创   1:翻译    2:转
+    isDelete = models.BooleanField(db_column="is_delete", default=False)
+    type = models.IntegerField(db_column='article_type',default=0); #文章类型  0:原创   1:翻译    2:转
 
     class Meta:
         db_table = 'asv_article'
+        # app_label = 'asv'

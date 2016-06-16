@@ -1,8 +1,8 @@
 
 import {Component,OnInit,ElementRef,Inject,Injector,
-    provide} from 'angular2/core';
+    provide} from '@angular/core';
 
-import {NgFor,NgIf} from 'angular2/common'
+import {NgFor,NgIf} from '@angular/common'
 
 import {RouteParams,
     RouteData,
@@ -10,9 +10,9 @@ import {RouteParams,
     Route,
     RouteConfig,
     ROUTER_DIRECTIVES,
-    AsyncRoute} from 'angular2/router';
+    AsyncRoute} from '@angular/router-deprecated';
 
-import {loadComponentAsync} 'ext'
+import {loadComponentAsync} from 'ext'
 
 import {TreeView} from './tree-view';
 import {Directory} from './directory';
@@ -47,9 +47,9 @@ import {Empty} from 'ext';
 @Component({
     selector: 'article',
     directives:[ROUTER_DIRECTIVES,TreeView,NgFor,NgIf],
-    template:'<router-outlet></router-outlet>'
+    // template: '
     // ,
-    // templateUrl: './manager/article/article.html'
+    templateUrl: './manager/article/article.html'
 //    styleUrls:['./app/dev/dev.css'],
 })
 @RouteConfig([
@@ -93,7 +93,7 @@ export class Article implements OnInit{
     //}
 
     constructor(@Inject(ElementRef) elementRef: ElementRef,
-        @Inject(Router) router: Router
+        @Inject(Router) router: Router,
         @Inject(RouteParams) params:RouteParams){
         this.name = '==='
         this.elementRef = elementRef;

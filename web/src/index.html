@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 {% load i18n static %}
+{% load tags %}
+
 <head>
     <meta charset="UTF-8">
     <title>as-v</title>
@@ -62,6 +64,9 @@
     $('body').children('div').css('min-height',(window.innerHeight - $('header').height() - $('footer').height() - 20) + 'px');
     $('body').css('overflow','');
   });
+  $(window).on('resize',function(){
+    $('body').children('div').css('min-height',(window.innerHeight - $('header').height() - $('footer').height() - 20) + 'px');
+  })
 </script>
 <footer>{% import datetime %}
   Copyright&nbsp;&copy;&nbsp;2014-{% print datetime.date.today().year %}

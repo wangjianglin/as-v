@@ -1,7 +1,7 @@
-import {Component,ElementRef,Inject,Directive,ViewContainerRef,TemplateRef} from 'angular2/core';
+import {Component, ElementRef, Inject, Directive, ViewContainerRef, TemplateRef} from '@angular/core';
 
-import {RouteParams} from 'angular2/router';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 
 //@Component({
@@ -12,8 +12,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 //})
 
 @Directive({
-	selector: 'about',
-    directives:[ROUTER_DIRECTIVES]
+	selector: 'about'
 	})
 
 export class About {

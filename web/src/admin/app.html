@@ -1,0 +1,94 @@
+
+<style type="text/css">
+
+
+
+nav ul{
+    list-style-type: none;
+}
+
+
+nav li{
+    float: left;
+}
+
+nav li a{
+    text-decoration: none;
+    background-color: transparent;
+    color: #777;
+    padding: 10px;
+}
+nav li a:hover{
+    color: #333;
+    background-color: transparent;
+}
+
+nav .active {
+    color: #555;
+    background-color: #e7e7e7;
+}
+
+
+.search{
+    float: right;
+    height: 20px;
+}
+
+</style>
+<!-- <header>
+    <nav>
+        <ul>
+            <li>as-v console</li>
+           <!- -  <li [class.active]="getLinkStyle('')"><a [router-link]="['/Home']" class="link">首页</a></li> - ->
+            <li [class.active]="getLinkStyle('/dev')"><a [routerLink]="['/Dev/']" class="link">开发技术</a></li>
+            <li [class.active]="getLinkStyle('/product')"><a [routerLink]="['/Product']" class="link">产品</a></li>
+            <!- - <li [class.active]="getLinkStyle('/about')" class="about-li" style="float:right;"><a [router-link]="['/About']" class="link">关于</a></li> - ->
+        </ul>
+    </nav>
+</header> -->
+<header>
+    
+    <div class="top">
+<span>我的</span>
+<span (click)="logout();">退出</span>
+<!-- <span><a href="manager.html">进入</a></span>
+<span>收藏</span> -->
+<span>关于</span>
+    </div>
+
+    <div class="nav">
+<a href="/"><span class="image" style="float: left;cursor: pointer;"><img src="images/logo.png"></span></a>
+<a [class.active]="getLinkStyle('/app/home','')" [routerLink]="['App','Home']"><div>状态</div></a>
+<a [class.active]="getLinkStyle('/app/user','')" [routerLink]="['App','User']"><div>用户</div></a>
+<a [class.active]="getLinkStyle('/app/role','')" [routerLink]="['App','Role']"><div>角色</div></a>
+<a [class.active]="getLinkStyle('/app/class','')" [routerLink]="['App','Class']"><div>分类</div></a>
+<a [class.active]="getLinkStyle('/app/set','')" [routerLink]="['App','Set']"><div>设置</div></a>
+<!-- <a [class.active]="getLinkStyle('/app/home','')" [routerLink]="['App','Home']"><div>汇总</div></a> -->
+<!-- <a [class.active]="getLinkStyle('/app/article')" [routerLink]="['App','Article',{id:3},'Home']"><div>开发技术</div></a>
+<a [class.active]="getLinkStyle('/app/product')" [routerLink]="['App','Product']"><div>产品</div></a>
+<a [class.active]="getLinkStyle('/app/product1')" [routerLink]="['App','Product']"><div>算法</div></a>
+<a [class.active]="getLinkStyle('/app/product2')" [routerLink]="['App','Product']"><div>设计</div></a>
+<a [class.active]="getLinkStyle('/app/product3')" [routerLink]="['App','Product']"><div>文档(docbook/latex)<!- - 包括api文档生成工具 - -></div></a> -->
+
+<!-- <span *ngFor="#item of datas"> -->
+<!-- <a *ngFor="#item of datas" [class.active]="getLinkStyle('/app/article/',item.id)" [routerLink]="['App','Article',{id:item.id,type:item.type},'Home']">
+<div>{{item.title}}</div>
+</a> --><!-- </span> -->
+
+<!-- <span class="search"><input></span> --><!-- 加入全文检索功能 -->
+    </div>
+</header>
+
+<div style="display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;">
+<router-outlet></router-outlet>
+</div>
+<footer>  Copyright&nbsp;&copy;&nbsp;2014-
+{{year}}
+  &nbsp;as-v.com&nbsp;&nbsp;版权所有&nbsp;&nbsp;email：184041008@qq.com&nbsp;&nbsp;渝ICP备xxxxxxxx号
+
+</footer>
+

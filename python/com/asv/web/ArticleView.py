@@ -30,7 +30,6 @@ def __process_clist(clist,id):
         if item.id == id:
             return True;
         if __process_clist(list(item.items()),id):
-            print('========')
             item.expanded = True;
             return True;
     return False;

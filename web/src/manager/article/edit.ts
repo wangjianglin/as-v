@@ -3,10 +3,10 @@ import {Component,
     View,
     ElementRef,
     Inject,
-    AfterViewInit} from 'angular2/core';
+    AfterViewInit} from '@angular/core';
 //import {ModalDialogInstance, IModalContentData} from 'BootstrapModal';
 
-import {RouteParams,Router} from 'angular2/router'
+import {RouteParams, Router} from '@angular/router-deprecated'
 
 declare var jQuery:any;
 
@@ -113,7 +113,10 @@ export class Edit implements AfterViewInit,OnInit{
                 classId:this.params.params.cid
             },
             result:function(e){
+                alert('保存成功！')
                 console.log(e)
+            },fault:function(){
+                alert('保存失败！')
             }
         });
     }

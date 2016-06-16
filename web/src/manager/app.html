@@ -50,7 +50,7 @@ nav .active {
     
     <div class="top">
 <span>我的</span>
-<span>退出</span>
+<span (click)="logout();">退出</span>
 <!-- <span><a href="manager.html">进入</a></span>
 <span>收藏</span> -->
 <span>关于</span>
@@ -66,7 +66,7 @@ nav .active {
 <a [class.active]="getLinkStyle('/app/product3')" [routerLink]="['App','Product']"><div>文档(docbook/latex)<!- - 包括api文档生成工具 - -></div></a> -->
 
 <!-- <span *ngFor="#item of datas"> -->
-<a *ngFor="#item of datas" [class.active]="getLinkStyle('/app/article/',item.id)" [routerLink]="['App','Article',{id:item.id,type:item.type},'Home']">
+<a *ngFor="let item of datas" [class.active]="getLinkStyle('/app/article/',item.id)" [routerLink]="['App','Article',{id:item.id,type:item.type},'Home']">
 <div>{{item.title}}</div>
 </a><!-- </span> -->
 
@@ -74,8 +74,12 @@ nav .active {
     </div>
 </header>
 
-<div>
-<login-router-outlet></login-router-outlet>
+<div style="display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;">
+<router-outlet></router-outlet>
 </div>
 <footer>  Copyright&nbsp;&copy;&nbsp;2014-
 {{year}}

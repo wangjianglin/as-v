@@ -32,12 +32,13 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     # 'django.contrib.admin',
     # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     # 'django.contrib.messages',
     'django.contrib.staticfiles',
     'lin.core.auth',
-    'com.asv.web'
+    'com.asv.web',
+    'lin.core'
     # ,
     # 'calc'
 )
@@ -62,11 +63,22 @@ WSGI_APPLICATION = 'set.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     #'ENGINE': 'sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+    #     #'NAME':':memory:'
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        #'ENGINE': 'sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
-        #'NAME':':memory:'
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'as-v',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS':{
+             'autocommit': True
+        }
     }
 }
 
@@ -102,7 +114,27 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "../dist/static")
 )
 
+
+#'django.template.context_processors.csrf',
+# 'django.contrib.auth.context_processors.auth',
+# 'django.template.context_processors.debug',
+# 'django.template.context_processors.i18n',
+# 'django.template.context_processors.media',
+# 'django.template.context_processors.static',
+# 'django.template.context_processors.tz',
+# 'django.contrib.messages.context_processors.messages')
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.template.context_processors.debug',
+    'django.template.context_processors.i18n',
+    'django.template.context_processors.media',
+    'django.template.context_processors.static'
+)
 # TEMPLATE_CONTEXT_PROCESSORS = (
+#django.template.context_processors.csrf
+
+
+
 #     'django.core.context_processors.debug',
 #     'django.core.context_processors.i18n',
 #     'django.core.context_processors.media',
